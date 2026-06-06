@@ -1,0 +1,36 @@
+{
+    "required": true,
+    "package": "net.acoyt.recomposed.mixin",
+    "plugin": "net.acoyt.recomposed.impl.util.CRMixinPlugin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "ArmorItemMixin",
+        "EnchantmentMixin",
+        "IgniteEnchantmentEffectMixin",
+        "ItemMixin",
+        "ItemStackMixin",
+        "enchants.AnvilScreenHandlerMixin",
+        "enchants.ItemEnchantmentsComponentMixin",
+        "enchants.disable.EnchantmentHelperMixin",
+        "enchants.disable.EnchantRandomlyLootFunctionMixin",
+        "enchants.disable.ItemEnchantmentsComponentBuilderMixin",
+        "enchants.disable.SetEnchantmentsLootFunctionMixin",
+        "enchants.disable.codec.BaseMapCodecMixin",
+        "enchants.disable.codec.RegistryElementCodecMixin",
+        "enchants.disable.codec.RegistryFixedCodecMixin",
+        "enchants.disable.internal.ItemGroupsMixin",
+        "enchants.disable.internal.RegistryEntryReferenceArgumentTypeMixin",
+        "enchants.disable.internal.RegistryEntryReferenceMixin",
+        "enchants.disable.internal.RegistryMixin",
+        "enchants.disable.internal.ResourceFinderMixin",
+        "enchants.disable.internal.SimpleRegistryMixin",
+        "enchants.disable.internal.TagGroupLoaderMixin",
+        "enchants.level.EnchantmentHelperMixin",
+        "enchants.level.EnchantmentLevelEntryMixin",
+        "enchants.level.EnchantmentMixin"
+    ],
+    "client": [],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

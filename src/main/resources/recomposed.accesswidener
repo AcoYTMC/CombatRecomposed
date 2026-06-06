@@ -1,0 +1,6 @@
+accessWidener v1 named
+
+accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;
+
+accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
+accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer

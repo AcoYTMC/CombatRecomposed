@@ -1,0 +1,36 @@
+{
+    "schemaVersion": 1,
+    "id": "recomposed",
+    "version": "${version}",
+    "name": "Combat Recomposed",
+    "description": "",
+    "authors": [
+        "Mythorical",
+        "AcoYT"
+    ],
+    "license": "ARR",
+    "icon": "assets/recomposed/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "net.acoyt.recomposed.impl.Recomposed"
+        ],
+        "client": [
+            "net.acoyt.recomposed.impl.RecomposedClient"
+        ],
+        "fabric-datagen": [
+            "net.acoyt.recomposed.data.RecomposedDatagen"
+        ]
+    },
+    "accessWidener": "recomposed.accesswidener",
+    "mixins": [
+        "recomposed.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.15.11",
+        "minecraft": "~1.21.1",
+        "java": ">=21",
+        "fabric-api": "*",
+        "acornlib": "*"
+    }
+}
