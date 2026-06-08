@@ -10,6 +10,7 @@
         "ItemMixin",
         "ItemStackMixin",
         "LivingEntityMixin",
+        "MaceItemMixin",
         "access.LivingEntityAccessor",
         "enchants.AnvilScreenHandlerMixin",
         "enchants.ItemEnchantmentsComponentMixin",
@@ -38,5 +39,5 @@
     ],
     "injectors": {
         "defaultRequire": 1
-  }
+    }
 }
