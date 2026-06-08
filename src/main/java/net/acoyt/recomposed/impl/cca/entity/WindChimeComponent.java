@@ -1,5 +1,6 @@
 package net.acoyt.recomposed.impl.cca.entity;
 
+import net.acoyt.recomposed.api.WindChimeUsableEvent;
 import net.acoyt.recomposed.impl.Recomposed;
 import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.item.WindChimeItem;
@@ -34,74 +35,74 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void sync() {
-        KEY.sync(this.player);
+        KEY.sync(player);
     }
 
     public void performDoubleJump() {
-        if (this.living.recomposed$getJumpingCooldown() <= 0 && this.getRemainingJumps() > 0) {
-            this.jumpsUsed++;
-            this.player.fallDistance = 0.0F;
-            this.living.recomposed$setJumpingCooldown(10);
-            this.sync();
+        if (living.recomposed$getJumpingCooldown() <= 0 && getRemainingJumps() > 0) {
+            jumpsUsed++;
+            player.fallDistance = 0.0F;
+            living.recomposed$setJumpingCooldown(10);
+            sync();
 
-            ItemStack stack = WindChimeItem.getWorn(this.player);
+            ItemStack stack = WindChimeItem.getWorn(player);
             if (stack.contains(CRDataComponents.JUMPS) && stack.getItem() instanceof WindChimeItem windChime) {
-                windChime.tryDecrement(stack, this.player);
+                windChime.tryDecrement(stack, player);
             }
         }
     }
 
     public void tick() {
-        if (this.player.isOnGround() && this.jumpsUsed > 0) {
-            this.jumpsUsed = 0;
-            this.sync();
+        if (player.isOnGround() && jumpsUsed > 0) {
+            jumpsUsed = 0;
+            sync();
         }
     }
 
     public void clientTick() {
-        if (this.living.recomposed$isJumping() && this.jumpCooldown <= 0 && this.getRemainingJumps() > 0 && !this.player.getAbilities().flying) {
-            this.jumpCooldown = 12;
-            Vec3d vec3d = this.player.getVelocity();
-            if (this.player.isSprinting()) {
-                vec3d = new Vec3d(vec3d.x * 1.25, 0.65 * (1 + this.player.getJumpBoostVelocityModifier()), vec3d.z * 1.25);
-                float f = this.player.getYaw() * 0.017453292F;
-                this.player.setVelocity(vec3d.add(-MathHelper.sin(f) * 0.2F, 0.0D, MathHelper.cos(f) * 0.2F));
+        if (living.recomposed$isJumping() && jumpCooldown <= 0 && getRemainingJumps() > 0 && !player.getAbilities().flying && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.getWorld())) {
+            jumpCooldown = 12;
+            Vec3d vec3d = player.getVelocity();
+            if (player.isSprinting()) {
+                vec3d = new Vec3d(vec3d.x * 1.25, 0.65 * (1 + player.getJumpBoostVelocityModifier()), vec3d.z * 1.25);
+                float f = player.getYaw() * 0.017453292F;
+                player.setVelocity(vec3d.add(-MathHelper.sin(f) * 0.2F, 0.0D, MathHelper.cos(f) * 0.2F));
             } else {
-                this.player.setVelocity(vec3d.x * 1.1, 0.55 * (1 + this.player.getJumpBoostVelocityModifier()), vec3d.z * 1.1);
+                player.setVelocity(vec3d.x * 1.1, 0.55 * (1 + player.getJumpBoostVelocityModifier()), vec3d.z * 1.1);
             }
 
-            this.player.velocityModified = true;
+            player.velocityModified = true;
             ClientPlayNetworking.send(new AirJumpPayload());
         }
 
-        if (this.player.isOnGround()) {
-            this.jumpCooldown = 8;
+        if (player.isOnGround()) {
+            jumpCooldown = 8;
         } else {
-            if (this.jumpCooldown > 0) {
-                this.jumpCooldown--;
+            if (jumpCooldown > 0) {
+                jumpCooldown--;
             }
         }
 
-        this.tick();
+        tick();
     }
 
     public void readFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
         int jumpsUsed = nbt.getInt("JumpsUsed");
-        if (this.player.getWorld().isClient && jumpsUsed > this.jumpsUsed) {
+        if (player.getWorld().isClient && jumpsUsed > this.jumpsUsed) {
             for (int i = 0; i < 12; i++) {
                 Vec3d pos = new Vec3d(
-                        this.player.getX() + this.player.getRandom().nextGaussian() * 0.2F,
-                        this.player.getBoundingBox().minY + 0.5F + this.player.getRandom().nextGaussian() * 0.2F,
-                        this.player.getZ() + this.player.getRandom().nextGaussian() * 0.2F
+                        player.getX() + player.getRandom().nextGaussian() * 0.2F,
+                        player.getBoundingBox().minY + 0.5F + player.getRandom().nextGaussian() * 0.2F,
+                        player.getZ() + player.getRandom().nextGaussian() * 0.2F
                 );
 
                 Vec3d velocity = new Vec3d(
-                        this.player.getRandom().nextGaussian() * 0.15F,
-                        this.player.getRandom().nextFloat() * 0.15F,
-                        this.player.getRandom().nextGaussian() * 0.15F
+                        player.getRandom().nextGaussian() * 0.15F,
+                        player.getRandom().nextFloat() * 0.15F,
+                        player.getRandom().nextGaussian() * 0.15F
                 );
 
-                this.player.getWorld().addParticle(
+                player.getWorld().addParticle(
                         ParticleTypes.CLOUD,
                         pos.x, pos.y, pos.z,
                         velocity.x, velocity.y, velocity.z
@@ -113,14 +114,14 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void writeToNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
-        nbt.putInt("JumpsUsed", this.jumpsUsed);
+        nbt.putInt("JumpsUsed", jumpsUsed);
     }
 
     public int getPossibleJumps() {
-        return !WindChimeItem.getWorn(this.player).isEmpty() ? 2 : 0;
+        return !WindChimeItem.getWorn(player).isEmpty() ? 2 : 0;
     }
 
     public int getRemainingJumps() {
-        return this.getPossibleJumps() - this.jumpsUsed;
+        return getPossibleJumps() - jumpsUsed;
     }
 }

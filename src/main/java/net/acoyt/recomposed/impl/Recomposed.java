@@ -1,6 +1,8 @@
 package net.acoyt.recomposed.impl;
 
 import com.mojang.logging.LogUtils;
+import net.acoyt.recomposed.api.WindChimeUsableEvent;
+import net.acoyt.recomposed.impl.cca.entity.CombatTimerComponent;
 import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.index.CRItems;
 import net.acoyt.recomposed.impl.index.CRNetworking;
@@ -41,6 +43,10 @@ public class Recomposed implements ModInitializer {
 
         /* Loot Tables */
         LootTableModifiers.init();
+
+        WindChimeUsableEvent.EVENT.register((player, world) -> {
+            return CombatTimerComponent.KEY.get(player).getRemaining() <= 0;
+        });
     }
 
     public static Identifier id(String path) {
