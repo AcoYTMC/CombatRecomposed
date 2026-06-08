@@ -1,7 +1,9 @@
 package net.acoyt.recomposed.impl;
 
 import com.mojang.logging.LogUtils;
+import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.index.CRItems;
+import net.acoyt.recomposed.impl.index.CRNetworking;
 import net.acoyt.recomposed.impl.util.LootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.enchantment.Enchantment;
@@ -31,7 +33,11 @@ public class Recomposed implements ModInitializer {
 
     public void onInitialize() {
         /* Initialization */
+        CRDataComponents.init();
         CRItems.init();
+
+        CRNetworking.registerTypes();
+        CRNetworking.registerC2SPackets();
 
         /* Loot Tables */
         LootTableModifiers.init();

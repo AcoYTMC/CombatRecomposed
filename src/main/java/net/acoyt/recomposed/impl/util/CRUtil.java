@@ -36,7 +36,10 @@ public class CRUtil {
             Enchantments.MENDING,
             Enchantments.PROJECTILE_PROTECTION,
             Enchantments.FIRE_PROTECTION,
-            Enchantments.FORTUNE
+            Enchantments.FORTUNE,
+            Enchantments.DENSITY,
+            Enchantments.BREACH,
+            Enchantments.WIND_BURST
     );
 
     public static boolean isDisabled(RegistryEntry<Enchantment> enchantment) {
@@ -60,6 +63,7 @@ public class CRUtil {
                 if (key == Enchantments.FEATHER_FALLING) return 2;
                 if (key == Enchantments.BLAST_PROTECTION) return 2;
                 if (key == Enchantments.KNOCKBACK) return 1;
+                if (key == Enchantments.RIPTIDE) return 2;
             }
 
             return 1;

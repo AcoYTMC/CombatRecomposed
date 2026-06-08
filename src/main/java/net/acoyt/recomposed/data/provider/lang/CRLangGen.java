@@ -23,4 +23,8 @@ public class CRLangGen extends OrganizedLanguageProvider {
     public void generateTags(RegistryWrapper.WrapperLookup registries, TranslationBuilder builder) {
         CRItemTags.ITEMS.registerLang(registries, builder);
     }
+
+    public void generateTexts(RegistryWrapper.WrapperLookup registries, TranslationBuilder builder) {
+        builder.add("trinkets.slot.misc.trinket", "Trinket");
+    }
 }

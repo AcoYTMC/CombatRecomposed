@@ -2,7 +2,6 @@ package net.acoyt.recomposed.mixin.enchants.disable.internal;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.acoyt.recomposed.impl.Recomposed;
-import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;

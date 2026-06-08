@@ -9,6 +9,8 @@
         "IgniteEnchantmentEffectMixin",
         "ItemMixin",
         "ItemStackMixin",
+        "LivingEntityMixin",
+        "access.LivingEntityAccessor",
         "enchants.AnvilScreenHandlerMixin",
         "enchants.ItemEnchantmentsComponentMixin",
         "enchants.disable.EnchantmentHelperMixin",
@@ -29,8 +31,12 @@
         "enchants.level.EnchantmentLevelEntryMixin",
         "enchants.level.EnchantmentMixin"
     ],
-    "client": [],
+    "client": [
+        "client.BipedEntityModelMixin",
+        "client.HandledScreenMixin",
+        "client.ScreenHandlerMixin"
+    ],
     "injectors": {
         "defaultRequire": 1
-    }
+  }
 }

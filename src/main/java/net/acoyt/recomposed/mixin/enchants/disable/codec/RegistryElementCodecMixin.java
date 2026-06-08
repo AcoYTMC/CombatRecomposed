@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
  * @author AcoYT
  */
 @Mixin(RegistryElementCodec.class)
-public class RegistryElementCodecMixin<E> {
+public abstract class RegistryElementCodecMixin<E> {
     @Shadow @Final private RegistryKey<? extends Registry<E>> registryRef;
 
     @SuppressWarnings("unchecked")

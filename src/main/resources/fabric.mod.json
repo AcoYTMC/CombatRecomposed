@@ -18,6 +18,9 @@
         "client": [
             "net.acoyt.recomposed.impl.RecomposedClient"
         ],
+        "cardinal-components": [
+            "net.acoyt.recomposed.impl.cca.CRComponents"
+        ],
         "fabric-datagen": [
             "net.acoyt.recomposed.data.RecomposedDatagen"
         ]
@@ -32,5 +35,10 @@
         "java": ">=21",
         "fabric-api": "*",
         "acornlib": "*"
+    },
+    "custom": {
+        "cardinal-components": [
+            "recomposed:wind_chime"
+        ]
     }
 }
