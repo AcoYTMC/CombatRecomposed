@@ -2,16 +2,22 @@ package net.acoyt.recomposed.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.acoyt.recomposed.compat.CRConfig;
+import net.acoyt.recomposed.impl.cca.entity.CombatTimerComponent;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
 import net.acoyt.recomposed.impl.item.WindChimeItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
+import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author AcoYT
@@ -50,5 +56,19 @@ public abstract class LivingEntityMixin extends Entity {
     private int recomposed$dontPlayFallSound(double value, Operation<Integer> original, float fallDistance) {
         LivingEntity living = (LivingEntity)(Object)this;
         return fallDistance > 1.0F && !WindChimeItem.getWorn(living).isEmpty() ? 0 : original.call(value);
+    }
+
+    @Inject(
+            method = "damage",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"
+            )
+    )
+    private void recomposed$setCombatTimer(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        LivingEntity living = (LivingEntity)(Object)this;
+        if (living instanceof PlayerEntity player && source.getAttacker() instanceof PlayerEntity && !player.getWorld().isClient && CRConfig.combatTimer > 0) {
+            CombatTimerComponent.KEY.get(player).setRemaining(CRConfig.combatTimer * 20); // 30s
+        }
     }
 }

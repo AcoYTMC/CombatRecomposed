@@ -1,5 +1,6 @@
 package net.acoyt.recomposed.impl.cca;
 
+import net.acoyt.recomposed.impl.cca.entity.CombatTimerComponent;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;
@@ -11,5 +12,6 @@ import org.ladysnake.cca.api.v3.entity.RespawnCopyStrategy;
 public class CRComponents implements EntityComponentInitializer {
     public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(WindChimeComponent.KEY, WindChimeComponent::new, RespawnCopyStrategy.NEVER_COPY);
+        registry.registerForPlayers(CombatTimerComponent.KEY, CombatTimerComponent::new, RespawnCopyStrategy.NEVER_COPY);
     }
 }

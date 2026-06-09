@@ -18,6 +18,9 @@
         "client": [
             "net.acoyt.recomposed.impl.RecomposedClient"
         ],
+        "server": [
+            "net.acoyt.recomposed.impl.RecomposedServer"
+        ],
         "cardinal-components": [
             "net.acoyt.recomposed.impl.cca.CRComponents"
         ],
@@ -38,7 +41,8 @@
     },
     "custom": {
         "cardinal-components": [
-            "recomposed:wind_chime"
+            "recomposed:wind_chime",
+            "recomposed:combat_timer"
         ]
     }
 }
