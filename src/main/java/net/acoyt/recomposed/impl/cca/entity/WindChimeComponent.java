@@ -2,16 +2,16 @@ package net.acoyt.recomposed.impl.cca.entity;
 
 import net.acoyt.recomposed.api.WindChimeUsableEvent;
 import net.acoyt.recomposed.impl.Recomposed;
-import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.item.WindChimeItem;
 import net.acoyt.recomposed.impl.networking.c2s.AirJumpPayload;
 import net.acoyt.recomposed.mixin.access.LivingEntityAccessor;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
@@ -41,14 +41,16 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     public void performDoubleJump() {
         if (living.recomposed$getJumpingCooldown() <= 0 && getRemainingJumps() > 0) {
             jumpsUsed++;
-            player.fallDistance = 0.0F;
+            player.onLanding();
             living.recomposed$setJumpingCooldown(10);
             sync();
 
-            ItemStack stack = WindChimeItem.getWorn(player);
-            if (stack.contains(CRDataComponents.JUMPS) && stack.getItem() instanceof WindChimeItem windChime) {
-                windChime.tryDecrement(stack, player);
-            }
+            player.getWorld().playSound(
+                    null,
+                    player.getBlockPos(),
+                    SoundEvents.BLOCK_SAND_BREAK, SoundCategory.PLAYERS,
+                    1.0F, 1.0F
+            );
         }
     }
 
@@ -60,7 +62,7 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void clientTick() {
-        if (living.recomposed$isJumping() && jumpCooldown <= 0 && getRemainingJumps() > 0 && !player.getAbilities().flying && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.getWorld())) {
+        if (living.recomposed$isJumping() && jumpCooldown <= 0 && getRemainingJumps() > 0 && player.fallDistance > 0.3F && !player.getAbilities().flying && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.getWorld())) {
             jumpCooldown = 12;
             Vec3d vec3d = player.getVelocity();
             if (player.isSprinting()) {

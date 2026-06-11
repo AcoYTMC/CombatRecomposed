@@ -26,5 +26,7 @@ public class CRLangGen extends OrganizedLanguageProvider {
 
     public void generateTexts(RegistryWrapper.WrapperLookup registries, TranslationBuilder builder) {
         builder.add("trinkets.slot.misc.trinket", "Trinket");
+
+        builder.add("tooltip.recomposed.in_combat", "You cannot use this in combat!");
     }
 }

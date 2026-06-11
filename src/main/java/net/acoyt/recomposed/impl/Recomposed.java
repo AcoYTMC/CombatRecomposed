@@ -3,8 +3,8 @@ package net.acoyt.recomposed.impl;
 import com.mojang.logging.LogUtils;
 import net.acoyt.recomposed.api.ItemMaxCountEvent;
 import net.acoyt.recomposed.api.WindChimeUsableEvent;
-import net.acoyt.recomposed.impl.event.CombatTimerUsableEvent;
-import net.acoyt.recomposed.impl.event.ItemLimiterEvent;
+import net.acoyt.recomposed.impl.event.CRCombatTimerEvent;
+import net.acoyt.recomposed.impl.event.CRItemMaxCountEvent;
 import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.index.CRItems;
 import net.acoyt.recomposed.impl.index.CRNetworking;
@@ -47,8 +47,8 @@ public class Recomposed implements ModInitializer {
         LootTableModifiers.init();
 
         /* Events */
-        ItemMaxCountEvent.EVENT.register(new ItemLimiterEvent());
-        WindChimeUsableEvent.EVENT.register(new CombatTimerUsableEvent());
+        ItemMaxCountEvent.EVENT.register(new CRItemMaxCountEvent());
+        WindChimeUsableEvent.EVENT.register(new CRCombatTimerEvent());
     }
 
     public static Identifier id(String path) {

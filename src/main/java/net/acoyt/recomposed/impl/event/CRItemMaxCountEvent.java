@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * @author AcoYT
  */
-public class ItemLimiterEvent implements ItemMaxCountEvent {
+public class CRItemMaxCountEvent implements ItemMaxCountEvent {
     public Optional<Integer> getMaxCount(PlayerEntity player, ItemStack stack) {
         return Optional.ofNullable(get(stack));
     }

@@ -12,6 +12,7 @@
         "ItemStackMixin",
         "LivingEntityMixin",
         "MaceItemMixin",
+        "PlayerEntityMixin",
         "access.LivingEntityAccessor",
         "enchants.AnvilScreenHandlerMixin",
         "enchants.ItemEnchantmentsComponentMixin",
@@ -31,7 +32,11 @@
         "enchants.disable.internal.TagGroupLoaderMixin",
         "enchants.level.EnchantmentHelperMixin",
         "enchants.level.EnchantmentLevelEntryMixin",
-        "enchants.level.EnchantmentMixin"
+        "enchants.level.EnchantmentMixin",
+        "potions.BrewingRecipeRegistryBuilderMixin",
+        "potions.ItemGroupEntriesImplMixin",
+        "potions.PotionContentsComponentMixin",
+        "potions.SetPotionLootFunctionMixin"
     ],
     "client": [
         "client.BipedEntityModelMixin",

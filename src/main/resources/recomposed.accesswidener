@@ -6,3 +6,5 @@ accessible method net/minecraft/client/gui/screen/ingame/HandledScreen drawItem 
 
 accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
 accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer
+
+accessible class net/minecraft/item/ItemGroup$EntriesImpl

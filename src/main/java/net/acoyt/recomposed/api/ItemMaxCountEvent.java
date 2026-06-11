@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -28,5 +29,5 @@ public interface ItemMaxCountEvent {
         return 1000;
     }
 
-    Optional<Integer> getMaxCount(PlayerEntity player, ItemStack stack);
+    Optional<Integer> getMaxCount(@Nullable PlayerEntity player, ItemStack stack);
 }

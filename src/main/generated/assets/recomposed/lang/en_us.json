@@ -1,5 +1,6 @@
 {
   "item.recomposed.wind_chime": "Wind Chime",
   "tag.item.recomposed.has_durability": "Has Durability",
+  "tooltip.recomposed.in_combat": "You cannot use this in combat!",
   "trinkets.slot.misc.trinket": "Trinket"
 }

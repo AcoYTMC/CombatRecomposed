@@ -3,12 +3,15 @@ package net.acoyt.recomposed.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.acoyt.recomposed.api.ItemMaxCountEvent;
+import net.acoyt.recomposed.impl.Recomposed;
+import net.acoyt.recomposed.impl.util.CRUtil;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Optional;
@@ -18,7 +21,9 @@ import java.util.Optional;
  */
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin {
-    @Shadow public abstract void setStack(ItemStack stack);
+    @Unique private boolean logged = false;
+
+    @Shadow public abstract ItemStack getStack();
 
     @WrapOperation(
             method = "onPlayerCollision",
@@ -28,23 +33,42 @@ public abstract class ItemEntityMixin {
             )
     )
     private boolean recomposed$overrideCount(PlayerInventory instance, ItemStack stack, Operation<Boolean> original, PlayerEntity player) {
-        int storedCount = 0;
-        for (int i = 0; i < instance.size(); i++) {
-            ItemStack itemStack = instance.getStack(i);
-            if (ItemStack.areItemsEqual(itemStack, stack)) {
-                storedCount += itemStack.getCount();
-            }
-        }
-
+        int inv = CRUtil.getCountOnPlayer(player, stack.getItem());
+        int entity = this.getStack().getCount();
         Optional<Integer> maxCount = ItemMaxCountEvent.EVENT.invoker().getMaxCount(player, stack);
-        if (maxCount.isPresent() && storedCount >= maxCount.get()) {
-            if (storedCount == maxCount.get()) {
-                return true;
+
+        if (maxCount.isPresent()) {
+            int max = maxCount.get();
+            int sum = inv + entity;
+            if (player.isCreative()) return original.call(instance, stack);
+            if (max == 0) return false;
+            if ((inv == 0 && entity <= max) || sum <= max) return original.call(instance, stack);
+
+            if (entity > max) {
+                if (!logged) Recomposed.LOGGER.info("1 [Inv: {}, Entity: {}, Max: {}]", inv, entity, max);
+                while (entity > max) entity -= max;
+
+                if (!logged) Recomposed.LOGGER.info("2 [Inv: {}, Entity: {}, Max: {}]", inv, entity, max);
+                int dif = sum - entity;
+
+                if (instance.insertStack(this.getStack().copyWithCount(dif))) {
+                    this.getStack().decrement(dif);
+                }
+
+                if (!logged) {
+                    Recomposed.LOGGER.info("3 [Inv: {}, Entity: {}, Max: {}, Dif: {}]", inv, entity, max, dif);
+                    logged = true;
+                }
             } else {
-                ItemStack remainder = stack.split(storedCount - maxCount.get());
-                stack.setCount(remainder.getCount());
-                return false;
+                while (sum > max) sum -= max;
+
+                int dif = max - sum;
+
+                this.getStack().decrement(dif);
+                stack.increment(dif);
             }
+
+            return false;
         }
 
         return original.call(instance, stack);

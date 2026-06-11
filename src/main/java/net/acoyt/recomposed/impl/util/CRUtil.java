@@ -3,8 +3,11 @@ package net.acoyt.recomposed.impl.util;
 import net.acoyt.recomposed.api.FunctionalLevelEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.ArmorMaterials;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.Potions;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -22,13 +25,6 @@ import java.util.Map;
 public class CRUtil {
     public static RegistryEntryOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
     public static final Map<Enchantment, Integer> MAX_LEVELS = new HashMap<>();
-    public static final List<RegistryEntry<ArmorMaterial>> WEAK_MATERIALS = Arrays.asList(
-            ArmorMaterials.LEATHER,
-            ArmorMaterials.CHAIN,
-            ArmorMaterials.IRON,
-            ArmorMaterials.TURTLE,
-            ArmorMaterials.ARMADILLO
-    );
 
     public static final List<RegistryKey<Enchantment>> disabledEnchantments = Arrays.asList(
             Enchantments.THORNS,
@@ -42,6 +38,13 @@ public class CRUtil {
             Enchantments.WIND_BURST
     );
 
+    public static final List<RegistryEntry<Potion>> disabledPotions = Arrays.asList(
+            Potions.STRENGTH,
+            Potions.LONG_STRENGTH,
+            Potions.STRONG_STRENGTH,
+            Potions.STRONG_SWIFTNESS
+    );
+
     public static boolean isDisabled(RegistryEntry<Enchantment> enchantment) {
         if (enchantment.getKey().isPresent()) {
             return isDisabled(enchantment.getKey().get().getValue());
@@ -52,6 +55,10 @@ public class CRUtil {
 
     public static boolean isDisabled(Identifier identifier) {
         return disabledEnchantments.contains(RegistryKey.of(RegistryKeys.ENCHANTMENT, identifier));
+    }
+
+    public static boolean isPotionDisabled(RegistryEntry<Potion> potion) {
+        return disabledPotions.contains(potion);
     }
 
     public static int getFunctionalLevel(RegistryEntry<Enchantment> enchantment) {
@@ -68,5 +75,17 @@ public class CRUtil {
 
             return 1;
         });
+    }
+
+    public static int getCountOnPlayer(PlayerEntity player, Item item) {
+        int i = 0;
+        for (int j = 0; j < player.getInventory().size(); j++) {
+            ItemStack stack = player.getInventory().getStack(i);
+            if (stack.isOf(item)) {
+                i += stack.getCount();
+            }
+        }
+
+        return i;
     }
 }
