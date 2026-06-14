@@ -1,7 +1,6 @@
 package net.acoyt.recomposed.mixin.client;
 
 import net.acoyt.acornlib.api.util.ItemUtils;
-import net.acoyt.recomposed.impl.RecomposedClient;
 import net.acoyt.recomposed.impl.index.CRItems;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.BipedEntityModel;

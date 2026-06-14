@@ -12,12 +12,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.vehicle.TntMinecartEntity;
 import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
  * @author AcoYT
@@ -58,17 +58,23 @@ public abstract class LivingEntityMixin extends Entity {
         return fallDistance > 1.0F && !WindChimeItem.getWorn(living).isEmpty() ? 0 : original.call(value);
     }
 
-    @Inject(
+    @WrapOperation(
             method = "damage",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"
             )
     )
-    private void recomposed$setCombatTimer(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    private void recomposed$setCombatTimer(LivingEntity instance, DamageSource source, float amount, Operation<Void> original) {
         LivingEntity living = (LivingEntity)(Object)this;
         if (living instanceof PlayerEntity player && source.getAttacker() instanceof PlayerEntity && !player.getWorld().isClient && CRConfig.combatTimer > 0) {
             CombatTimerComponent.KEY.get(player).setRemaining(CRConfig.combatTimer * 20); // 30s
         }
+
+        if (source.getSource() instanceof TntMinecartEntity) {
+            amount = MathHelper.clamp(amount, 0.0F, 16.0F);
+        }
+
+        original.call(instance, source, amount);
     }
 }

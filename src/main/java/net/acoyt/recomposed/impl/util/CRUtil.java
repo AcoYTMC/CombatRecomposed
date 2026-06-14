@@ -3,9 +3,6 @@ package net.acoyt.recomposed.impl.util;
 import net.acoyt.recomposed.api.FunctionalLevelEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.RegistryKey;
@@ -75,17 +72,5 @@ public class CRUtil {
 
             return 1;
         });
-    }
-
-    public static int getCountOnPlayer(PlayerEntity player, Item item) {
-        int i = 0;
-        for (int j = 0; j < player.getInventory().size(); j++) {
-            ItemStack stack = player.getInventory().getStack(i);
-            if (stack.isOf(item)) {
-                i += stack.getCount();
-            }
-        }
-
-        return i;
     }
 }
