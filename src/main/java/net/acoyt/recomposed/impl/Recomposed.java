@@ -9,7 +9,7 @@ import net.acoyt.recomposed.impl.event.CRItemMaxCountEvent;
 import net.acoyt.recomposed.impl.event.CRRemoveRecipesEvent;
 import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.index.CRItems;
-import net.acoyt.recomposed.impl.index.CRNetworking;
+import net.acoyt.recomposed.impl.networking.CRNetworking;
 import net.acoyt.recomposed.impl.index.CRSounds;
 import net.acoyt.recomposed.impl.util.LootTableModifiers;
 import net.fabricmc.api.ModInitializer;

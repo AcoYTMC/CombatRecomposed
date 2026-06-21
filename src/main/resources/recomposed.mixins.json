@@ -4,8 +4,10 @@
     "plugin": "net.acoyt.recomposed.impl.util.CRMixinPlugin",
     "compatibilityLevel": "JAVA_21",
     "mixins": [
+        "AbstractBlockStateMixin",
         "ArmorItemMixin",
         "EnchantmentMixin",
+        "EntityShapeContextMixin",
         "IgniteEnchantmentEffectMixin",
         "ItemMixin",
         "ItemStackMixin",
@@ -14,6 +16,7 @@
         "PlayerEntityMixin",
         "PowderSnowBlockMixin",
         "ServerPlayerEntityMixin",
+        "ServerPlayNetworkHandlerMixin",
         "WindChargeItemMixin",
         "access.LivingEntityAccessor",
         "enchants.AnvilScreenHandlerMixin",

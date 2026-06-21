@@ -3,6 +3,8 @@ package net.acoyt.recomposed.impl.util;
 import net.acoyt.recomposed.api.FunctionalLevelEvent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.Potions;
 import net.minecraft.registry.RegistryKey;
@@ -72,5 +74,18 @@ public class CRUtil {
 
             return 1;
         });
+    }
+
+    public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
+        if (living instanceof PlayerEntity player && player.getAbilities().flying) {
+            return false;
+        }
+        if (!allowWater) {
+            if (living.isTouchingWater() || living.isSwimming()) {
+                return false;
+            }
+        }
+
+        return !living.isFallFlying() && !living.hasVehicle() && !living.isClimbing();
     }
 }
