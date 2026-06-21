@@ -1,7 +1,10 @@
 package net.acoyt.recomposed.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
+import net.acoyt.recomposed.impl.item.LifeVestItem;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,5 +28,21 @@ public abstract class PlayerEntityMixin extends LivingEntity {
         }
 
         return original;
+    }
+
+    @WrapOperation(
+            method = "updateSwimming",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;updateSwimming()V"
+            )
+    )
+    private void recomposed$noSwimming(PlayerEntity instance, Operation<Void> original) {
+        if (!LifeVestItem.getWorn(instance).isEmpty()) {
+            instance.setSwimming(false);
+            return;
+        }
+
+        original.call(instance);
     }
 }

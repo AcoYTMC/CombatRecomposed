@@ -20,8 +20,8 @@ import java.util.Optional;
 /**
  * @author AcoYT
  */
-public class WindChimeItem extends Item implements Trinket {
-    public WindChimeItem(Settings settings) {
+public class LifeVestItem extends Item implements Trinket {
+    public LifeVestItem(Settings settings) {
         super(settings.component(CRDataComponents.IMMORTAL, true));
     }
 
@@ -35,8 +35,8 @@ public class WindChimeItem extends Item implements Trinket {
         if (component.isEmpty()) return ItemStack.EMPTY;
 
         TrinketComponent trinkets = component.get();
-        for (Pair<SlotReference, ItemStack> pair : trinkets.getEquipped(stack -> stack.isOf(CRItems.WIND_CHIME))) {
-            if (pair.getLeft().inventory().getSlotType().getName().equals("trinket") && pair.getRight().isOf(CRItems.WIND_CHIME)) {
+        for (Pair<SlotReference, ItemStack> pair : trinkets.getEquipped(stack -> stack.isOf(CRItems.LIFE_VEST))) {
+            if (pair.getLeft().inventory().getSlotType().getName().equals("trinket") && pair.getRight().isOf(CRItems.LIFE_VEST)) {
                 return pair.getRight();
             }
         }

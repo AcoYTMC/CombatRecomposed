@@ -3,7 +3,9 @@ package net.acoyt.recomposed.mixin;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.acoyt.recomposed.impl.index.CRItems;
 import net.acoyt.recomposed.impl.index.tag.CRItemTags;
+import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -27,5 +29,14 @@ public abstract class ItemStackMixin {
     @WrapMethod(method = "isEnchantable")
     private boolean recomposed$unenchantableMace(Operation<Boolean> original) {
         return original.call() && !this.isOf(Items.MACE);
+    }
+
+    @WrapMethod(method = "takesDamageFrom")
+    private boolean recomposed$immortalTrinkets(DamageSource source, Operation<Boolean> original) {
+        if (this.isOf(CRItems.WIND_CHIME) || this.isOf(CRItems.LIFE_VEST)) {
+            return false;
+        }
+
+        return original.call(source);
     }
 }

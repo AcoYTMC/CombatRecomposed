@@ -10,12 +10,17 @@ import net.acoyt.recomposed.impl.event.CRRemoveRecipesEvent;
 import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.index.CRItems;
 import net.acoyt.recomposed.impl.index.CRNetworking;
+import net.acoyt.recomposed.impl.index.CRSounds;
 import net.acoyt.recomposed.impl.util.LootTableModifiers;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.entry.RegistryEntryList;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 
@@ -41,6 +46,7 @@ public class Recomposed implements ModInitializer {
         /* Initialization */
         CRDataComponents.init();
         CRItems.init();
+        CRSounds.init();
 
         CRNetworking.registerTypes();
         CRNetworking.registerC2SPackets();
@@ -52,6 +58,11 @@ public class Recomposed implements ModInitializer {
         WindChimeUsableEvent.EVENT.register(new CRCombatTimerEvent());
         ItemMaxCountEvent.EVENT.register(new CRItemMaxCountEvent());
         FilterRecipesEvent.EVENT.register(new CRRemoveRecipesEvent());
+
+        /* Resource Packs */
+        FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent(container -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(id("muted_wind_chimes"), container, Text.literal("Muted Wind Chimes"), ResourcePackActivationType.NORMAL);
+        });
     }
 
     public static Identifier id(String path) {

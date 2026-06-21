@@ -12,7 +12,7 @@ import net.minecraft.network.codec.PacketCodecs;
 public interface CRDataComponents {
     ComponentTypeRegistrant COMPONENTS = new ComponentTypeRegistrant(Recomposed.MOD_ID);
 
-    ComponentType<Integer> JUMPS = COMPONENTS.register("jumps", Codec.INT, PacketCodecs.INTEGER);
+    ComponentType<Boolean> IMMORTAL = COMPONENTS.register("immortal", Codec.BOOL, PacketCodecs.BOOL);
 
     static void init() {}
 }

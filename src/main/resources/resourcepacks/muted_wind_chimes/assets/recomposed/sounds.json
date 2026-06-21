@@ -1,0 +1,7 @@
+{
+    "entity.jump": {
+        "sounds": [
+            "intentionally_empty"
+        ]
+    }
+}

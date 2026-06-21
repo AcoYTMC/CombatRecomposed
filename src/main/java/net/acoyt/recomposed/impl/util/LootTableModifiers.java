@@ -1,13 +1,16 @@
 package net.acoyt.recomposed.impl.util;
 
+import net.acoyt.recomposed.impl.index.CRItems;
 import net.fabricmc.fabric.api.loot.v3.LootTableEvents;
 import net.fabricmc.fabric.api.loot.v3.LootTableSource;
 import net.minecraft.item.Items;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTable;
 import net.minecraft.loot.LootTables;
+import net.minecraft.loot.condition.RandomChanceLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -15,9 +18,10 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @author AcoYT
  */
-public class LootTableModifiers implements LootTableEvents.Replace {
+public class LootTableModifiers implements LootTableEvents.Replace, LootTableEvents.Modify {
     public static void init() {
         LootTableEvents.REPLACE.register(new LootTableModifiers());
+        LootTableEvents.MODIFY.register(new LootTableModifiers());
     }
 
     @Nullable
@@ -35,5 +39,25 @@ public class LootTableModifiers implements LootTableEvents.Replace {
         }
 
         return lootTable;
+    }
+
+    public void modifyLootTable(RegistryKey<LootTable> key, LootTable.Builder tableBuilder, LootTableSource source, RegistryWrapper.WrapperLookup registries) {
+        if (key.equals(LootTables.TRIAL_CHAMBERS_REWARD_OMINOUS_CHEST)) {
+            LootPool.Builder poolBuilder = LootPool.builder()
+                    .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
+                    .conditionally(RandomChanceLootCondition.builder(0.25F))
+                    .with(ItemEntry.builder(CRItems.WIND_CHIME));
+
+            tableBuilder.pool(poolBuilder);
+        }
+
+        if (key.equals(LootTables.SHIPWRECK_TREASURE_CHEST)) {
+            LootPool.Builder poolBuilder = LootPool.builder()
+                    .rolls(UniformLootNumberProvider.create(1.0F, 1.0F))
+                    .conditionally(RandomChanceLootCondition.builder(0.13F))
+                    .with(ItemEntry.builder(CRItems.LIFE_VEST));
+
+            tableBuilder.pool(poolBuilder);
+        }
     }
 }

@@ -1,0 +1,16 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "recomposed:item/wind_chime"
+	},
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, -8, 1],
+			"scale": [0.55, 0.55, 0.55]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, -8, 1],
+			"scale": [0.55, 0.55, 0.55]
+		}
+	}
+}

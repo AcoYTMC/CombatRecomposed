@@ -1,0 +1,8 @@
+{
+    "entity.jump": {
+        "sounds": [
+            "recomposed:entity_jump"
+        ],
+        "subtitle": "subtitles.entity.jump"
+    }
+}

@@ -20,6 +20,6 @@ public class CRModelGen extends FabricModelProvider {
     }
 
     public void generateItemModels(ItemModelGenerator generator) {
-        generator.register(CRItems.WIND_CHIME, Models.GENERATED);
+        generator.register(CRItems.LIFE_VEST, Models.GENERATED);
     }
 }

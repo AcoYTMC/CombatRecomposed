@@ -12,6 +12,7 @@
         "LivingEntityMixin",
         "MaceItemMixin",
         "PlayerEntityMixin",
+        "PowderSnowBlockMixin",
         "ServerPlayerEntityMixin",
         "WindChargeItemMixin",
         "access.LivingEntityAccessor",
@@ -41,6 +42,7 @@
     ],
     "client": [
         "client.BipedEntityModelMixin",
+        "client.ClientPlayerEntityMixin",
         "client.HandledScreenMixin",
         "client.ScreenHandlerMixin"
     ],
