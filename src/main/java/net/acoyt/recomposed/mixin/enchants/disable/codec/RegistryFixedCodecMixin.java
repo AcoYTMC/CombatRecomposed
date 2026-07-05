@@ -25,7 +25,7 @@ public abstract class RegistryFixedCodecMixin<E> {
 
     @SuppressWarnings("unchecked")
     @ModifyReturnValue(method = "decode", at = @At("RETURN"))
-    private <T> DataResult<Pair<RegistryEntry<E>, T>> recomposed$(DataResult<Pair<RegistryEntry<E>, T>> original, DynamicOps<T> ops, T input) {
+    private <T> DataResult<Pair<RegistryEntry<E>, T>> recomposed$iHateEnchantments(DataResult<Pair<RegistryEntry<E>, T>> original, DynamicOps<T> ops, T input) {
         if (!original.hasResultOrPartial() && registry.equals(RegistryKeys.ENCHANTMENT) && ops instanceof RegistryOps<T> registryOps) {
             return registryOps.getEntryLookup(registry)
                     .flatMap(lookup -> lookup.getOptional((RegistryKey<E>) Recomposed.EMPTY_KEY))

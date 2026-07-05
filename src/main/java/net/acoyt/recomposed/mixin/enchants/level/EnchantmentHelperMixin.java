@@ -33,9 +33,9 @@ public abstract class EnchantmentHelperMixin {
     }
 
     @ModifyVariable(method = "set", at = @At("HEAD"), argsOnly = true)
-    private static ItemEnchantmentsComponent recomposed$universalLevel(ItemEnchantmentsComponent value, ItemStack stack) {
-        ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(value);
-        value.getEnchantments().forEach(enchantment -> builder.set(enchantment, 1));
+    private static ItemEnchantmentsComponent recomposed$universalLevel(ItemEnchantmentsComponent enchantments, ItemStack stack) {
+        ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(enchantments);
+        enchantments.getEnchantments().forEach(enchantment -> builder.set(enchantment, 1));
         return builder.build();
     }
 

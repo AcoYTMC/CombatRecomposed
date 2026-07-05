@@ -11,11 +11,7 @@ import net.minecraft.world.World;
  */
 public class CRCombatTimerEvent implements WindChimeUsableEvent {
     public boolean canUse(PlayerEntity player, World world) {
-        if (!(CombatTimerComponent.KEY.get(player).getRemaining() <= 0)) {
-            player.sendMessage(Text.translatable("tooltip.recomposed.in_combat"), true);
-            return false;
-        }
-
-        return true;
+        //player.sendMessage(Text.translatable("tooltip.recomposed.in_combat"), true);
+        return CombatTimerComponent.KEY.get(player).getRemaining() <= 0;
     }
 }

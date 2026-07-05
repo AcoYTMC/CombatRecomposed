@@ -102,7 +102,7 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
                         player.getRandom().nextGaussian() * 0.15F,
                         player.getRandom().nextFloat() * 0.15F,
                         player.getRandom().nextGaussian() * 0.15F
-                );
+                ).multiply(0.6);
 
                 player.getWorld().addParticle(
                         ParticleTypes.CLOUD,

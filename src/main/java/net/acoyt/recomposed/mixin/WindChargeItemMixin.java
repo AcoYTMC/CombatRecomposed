@@ -24,6 +24,6 @@ public abstract class WindChargeItemMixin extends Item {
 
     @Inject(method = "use", at = @At("HEAD"))
     private void recomposed$maceCooldown(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        user.getItemCooldownManager().set(Items.MACE, 3 * 20);
+        user.getItemCooldownManager().set(Items.MACE, 40);
     }
 }

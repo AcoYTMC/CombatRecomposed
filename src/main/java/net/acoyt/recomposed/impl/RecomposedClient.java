@@ -1,6 +1,7 @@
 package net.acoyt.recomposed.impl;
 
 import net.acoyt.recomposed.impl.event.client.ChimeStepEvent;
+import net.acoyt.recomposed.impl.event.client.CoyoteBiteEvent;
 import net.acoyt.recomposed.impl.networking.CRNetworking;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
@@ -16,5 +17,6 @@ public class RecomposedClient implements ClientModInitializer {
         CRNetworking.registerS2CPackets();
 
         ClientTickEvents.END_CLIENT_TICK.register(new ChimeStepEvent());
+        ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
     }
 }

@@ -28,8 +28,8 @@ public abstract class ServerPlayerEntityMixin extends PlayerEntity {
                     ordinal = 0
             )
     )
-    private boolean recomposed$noMessageIfInvisible(boolean original, DamageSource source) {
-        if (source.getAttacker() != null && source.getAttacker().isInvisible() && CRConfig.invisKillsNoDeathMsg) {
+    private boolean recomposed$noMessageIfInvisible(boolean original, DamageSource damageSource) {
+        if (damageSource.getAttacker() != null && damageSource.getAttacker().isInvisible() && CRConfig.invisKillsNoDeathMsg) {
             return false;
         }
 

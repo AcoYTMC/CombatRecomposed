@@ -19,7 +19,6 @@
         "ServerPlayNetworkHandlerMixin",
         "WindChargeItemMixin",
         "access.LivingEntityAccessor",
-        "enchants.AnvilScreenHandlerMixin",
         "enchants.ItemEnchantmentsComponentMixin",
         "enchants.disable.EnchantmentHelperMixin",
         "enchants.disable.EnchantRandomlyLootFunctionMixin",
@@ -47,6 +46,7 @@
         "client.BipedEntityModelMixin",
         "client.ClientPlayerEntityMixin",
         "client.HandledScreenMixin",
+        "client.MinecraftClientMixin",
         "client.ScreenHandlerMixin"
     ],
     "injectors": {
