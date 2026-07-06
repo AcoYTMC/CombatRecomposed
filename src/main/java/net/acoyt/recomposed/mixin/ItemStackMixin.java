@@ -26,6 +26,12 @@ public abstract class ItemStackMixin {
         return !stack.isEmpty() && !stack.isIn(CRItemTags.HAS_DURABILITY) ? 0 : original;
     }
 
+    @ModifyReturnValue(method = "isDamageable", at = @At("RETURN"))
+    private boolean recomposed$noDurability(boolean original) {
+        ItemStack stack = (ItemStack)(Object)this;
+        return original && stack.isIn(CRItemTags.HAS_DURABILITY);
+    }
+
     @WrapMethod(method = "isEnchantable")
     private boolean recomposed$unenchantableMace(Operation<Boolean> original) {
         return original.call() && !this.isOf(Items.MACE);

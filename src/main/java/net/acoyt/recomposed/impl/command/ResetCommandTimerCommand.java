@@ -29,7 +29,7 @@ public class ResetCommandTimerCommand {
                                 CombatTimerComponent.KEY.get(player).setRemaining(0);
                             }
 
-                            context.getSource().sendFeedback(() -> Text.literal("Reset combat timer for " + (entities.size() == 1 ? entities.getFirst().getDisplayName().getString() : entities.size() + "entities")), false);
+                            context.getSource().sendFeedback(() -> Text.literal("Reset combat timer for " + (entities.size() == 1 ? entities.getFirst().getDisplayName().getString() : entities.size() + " entities")), false);
 
                             return Command.SINGLE_SUCCESS;
                         })

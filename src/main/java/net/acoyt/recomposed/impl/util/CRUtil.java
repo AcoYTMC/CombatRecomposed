@@ -70,6 +70,7 @@ public class CRUtil {
                 if (key == Enchantments.BLAST_PROTECTION) return 2;
                 if (key == Enchantments.KNOCKBACK) return 1;
                 if (key == Enchantments.RIPTIDE) return 2;
+                if (key == Enchantments.EFFICIENCY) return 4;
             }
 
             return 1;
