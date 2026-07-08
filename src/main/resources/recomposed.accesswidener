@@ -1,10 +1,8 @@
 accessWidener v1 named
 
-accessible field net/minecraft/registry/tag/TagEntry id Lnet/minecraft/util/Identifier;
+accessible field net/minecraft/tags/TagEntry id Lnet/minecraft/resources/ResourceLocation;
 
-accessible method net/minecraft/client/gui/screen/ingame/HandledScreen drawItem (Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/item/ItemStack;IILjava/lang/String;)V
+accessible class net/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentVisitor
+accessible class net/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentInSlotVisitor
 
-accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
-accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer
-
-accessible class net/minecraft/item/ItemGroup$EntriesImpl
+accessible class net/minecraft/world/item/CreativeModeTab$ItemDisplayBuilder

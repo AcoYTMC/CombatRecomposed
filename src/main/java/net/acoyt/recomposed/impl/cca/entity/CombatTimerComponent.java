@@ -1,9 +1,9 @@
 package net.acoyt.recomposed.impl.cca.entity;
 
 import net.acoyt.recomposed.impl.Recomposed;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -14,11 +14,11 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
  */
 public class CombatTimerComponent implements AutoSyncedComponent, CommonTickingComponent {
     public static final ComponentKey<CombatTimerComponent> KEY = ComponentRegistry.getOrCreate(Recomposed.id("combat_timer"), CombatTimerComponent.class);
-    private final PlayerEntity player;
+    private final Player player;
 
     private int remaining;
 
-    public CombatTimerComponent(PlayerEntity player) {
+    public CombatTimerComponent(Player player) {
         this.player = player;
     }
 
@@ -35,11 +35,11 @@ public class CombatTimerComponent implements AutoSyncedComponent, CommonTickingC
         }
     }
 
-    public void readFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
+    public void readFromNbt(CompoundTag nbt, HolderLookup.Provider registries) {
         remaining = nbt.getInt("Remaining");
     }
 
-    public void writeToNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registries) {
+    public void writeToNbt(CompoundTag nbt, HolderLookup.Provider registries) {
         nbt.putInt("Remaining", remaining);
     }
 

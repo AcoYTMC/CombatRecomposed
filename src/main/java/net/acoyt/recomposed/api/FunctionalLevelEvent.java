@@ -2,9 +2,8 @@ package net.acoyt.recomposed.api;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.entry.RegistryEntry;
-
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.enchantment.Enchantment;
 import java.util.*;
 
 /**
@@ -28,5 +27,5 @@ public interface FunctionalLevelEvent {
         return 1000;
     }
 
-    Optional<Integer> getFunctionalLevel(RegistryEntry<Enchantment> enchantment);
+    Optional<Integer> getFunctionalLevel(Holder<Enchantment> enchantment);
 }

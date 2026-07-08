@@ -15,11 +15,11 @@ import net.acoyt.recomposed.impl.networking.CRNetworking;
 import net.acoyt.recomposed.impl.util.LootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntryList;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.HolderSet;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.slf4j.Logger;
 
 /**
@@ -29,16 +29,16 @@ public class Recomposed implements ModInitializer {
     public static final String MOD_ID = "recomposed";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public static final RegistryKey<Enchantment> EMPTY_KEY = RegistryKey.of(RegistryKeys.ENCHANTMENT, id("empty"));
-    public static final Enchantment EMPTY = Enchantment.builder(
+    public static final ResourceKey<Enchantment> EMPTY_KEY = ResourceKey.create(Registries.ENCHANTMENT, id("empty"));
+    public static final Enchantment EMPTY = Enchantment.enchantment(
             Enchantment.definition(
-                    RegistryEntryList.empty(),
+                    HolderSet.empty(),
                     1, 1,
                     Enchantment.constantCost(0),
                     Enchantment.constantCost(0),
                     0
             )
-    ).build(EMPTY_KEY.getValue());
+    ).build(EMPTY_KEY.location());
 
     public void onInitialize() {
         /* Initialization */
@@ -61,7 +61,7 @@ public class Recomposed implements ModInitializer {
         FilterRecipesEvent.EVENT.register(new CRRemoveRecipesEvent());
     }
 
-    public static Identifier id(String path) {
-        return Identifier.of(MOD_ID, path);
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 }

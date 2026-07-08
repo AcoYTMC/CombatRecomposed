@@ -5,25 +5,25 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
 import net.acoyt.recomposed.impl.item.LifeVestItem;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 /**
  * @author AcoYT
  */
-@Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntity {
-    protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
+@Mixin(Player.class)
+public abstract class PlayerMixin extends LivingEntity {
+    protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level world) {
         super(entityType, world);
     }
 
-    @ModifyReturnValue(method = "getOffGroundSpeed", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getFlyingSpeed", at = @At("RETURN"))
     private float recomposed$windChimeBunnyHopping(float original) {
-        if (WindChimeComponent.KEY.get(this).getPossibleJumps() > WindChimeComponent.KEY.get(this).getRemainingJumps()) {
+        if (WindChimeComponent.KEY.get(this).getPossibleJumps() > WindChimeComponent.KEY.get(this).getJumpsLeft()) {
             return original * 1.65F;
         }
 
@@ -34,10 +34,10 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             method = "updateSwimming",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/LivingEntity;updateSwimming()V"
+                    target = "Lnet/minecraft/world/entity/LivingEntity;updateSwimming()V"
             )
     )
-    private void recomposed$noSwimming(PlayerEntity instance, Operation<Void> original) {
+    private void recomposed$noSwimming(Player instance, Operation<Void> original) {
         if (!LifeVestItem.getWorn(instance).isEmpty()) {
             instance.setSwimming(false);
             return;

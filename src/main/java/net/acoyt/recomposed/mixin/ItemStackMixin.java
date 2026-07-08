@@ -5,10 +5,10 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.acoyt.recomposed.impl.index.CRItems;
 import net.acoyt.recomposed.impl.index.tag.CRItemTags;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,28 +18,28 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @Shadow public abstract boolean isOf(Item item);
+    @Shadow public abstract boolean is(Item item);
 
-    @ModifyReturnValue(method = "getDamage", at = @At("RETURN"))
+    @ModifyReturnValue(method = "getDamageValue", at = @At("RETURN"))
     private int recomposed$noDurability(int original) {
         ItemStack stack = (ItemStack)(Object)this;
-        return !stack.isEmpty() && !stack.isIn(CRItemTags.HAS_DURABILITY) ? 0 : original;
+        return !stack.isEmpty() && !stack.is(CRItemTags.HAS_DURABILITY) ? 0 : original;
     }
 
-    @ModifyReturnValue(method = "isDamageable", at = @At("RETURN"))
+    @ModifyReturnValue(method = "isDamageableItem", at = @At("RETURN"))
     private boolean recomposed$noDurability(boolean original) {
         ItemStack stack = (ItemStack)(Object)this;
-        return original && stack.isIn(CRItemTags.HAS_DURABILITY);
+        return original && stack.is(CRItemTags.HAS_DURABILITY);
     }
 
     @WrapMethod(method = "isEnchantable")
     private boolean recomposed$unenchantableMace(Operation<Boolean> original) {
-        return original.call() && !this.isOf(Items.MACE);
+        return original.call() && !this.is(Items.MACE);
     }
 
-    @WrapMethod(method = "takesDamageFrom")
+    @WrapMethod(method = "canBeHurtBy")
     private boolean recomposed$immortalTrinkets(DamageSource source, Operation<Boolean> original) {
-        if (this.isOf(CRItems.WIND_CHIME) || this.isOf(CRItems.LIFE_VEST)) {
+        if (this.is(CRItems.WIND_CHIME) || this.is(CRItems.LIFE_VEST)) {
             return false;
         }
 

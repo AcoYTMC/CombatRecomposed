@@ -8,7 +8,7 @@ import net.acoyt.recomposed.impl.Recomposed;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.RegistryFixedCodec;
+import net.minecraft.resources.RegistryFileCodec;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import org.spongepowered.asm.mixin.Final;
@@ -19,13 +19,13 @@ import org.spongepowered.asm.mixin.injection.At;
 /**
  * @author AcoYT
  */
-@Mixin(RegistryFixedCodec.class)
-public abstract class RegistryFixedCodecMixin<E> {
+@Mixin(RegistryFileCodec.class)
+public abstract class RegistryFileCodecMixin<E> {
     @Shadow @Final private ResourceKey<? extends Registry<E>> registryKey;
 
     @SuppressWarnings("unchecked")
     @ModifyReturnValue(method = "decode", at = @At("RETURN"))
-    private <T> DataResult<Pair<Holder<E>, T>> recomposed$iHateEnchantments(DataResult<Pair<Holder<E>, T>> original, DynamicOps<T> ops, T input) {
+    private <T> DataResult<Pair<Holder<E>, T>> recomposed$killMePleaseee(DataResult<Pair<Holder<E>, T>> original, DynamicOps<T> ops, T input) {
         if (!original.hasResultOrPartial() && registryKey.equals(Registries.ENCHANTMENT) && ops instanceof RegistryOps<T> registryOps) {
             return registryOps.getter(registryKey)
                     .flatMap(lookup -> lookup.get((ResourceKey<E>) Recomposed.EMPTY_KEY))

@@ -5,12 +5,12 @@ import net.acoyt.recomposed.impl.item.LifeVestItem;
 import net.acoyt.recomposed.impl.networking.c2s.AscendWaterPayload;
 import net.acoyt.recomposed.impl.util.CRUtil;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.player.Player;
 import org.ladysnake.cca.api.v3.component.ComponentKey;
 import org.ladysnake.cca.api.v3.component.ComponentRegistry;
 import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
@@ -21,13 +21,13 @@ import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
  */
 public class AscendWaterComponent implements AutoSyncedComponent, CommonTickingComponent {
     public static final ComponentKey<AscendWaterComponent> KEY = ComponentRegistry.getOrCreate(Recomposed.id("ascend_water"), AscendWaterComponent.class);
-    private final PlayerEntity player;
+    private final Player player;
     private boolean shouldAscend = false;
     private float ascend = 0;
 
     private boolean hasAscend = false;
 
-    public AscendWaterComponent(PlayerEntity player) {
+    public AscendWaterComponent(Player player) {
         this.player = player;
     }
 
@@ -36,9 +36,9 @@ public class AscendWaterComponent implements AutoSyncedComponent, CommonTickingC
         hasAscend = boostStrength > 0;
         if (hasAscend) {
             if (shouldAscend) {
-                if (player.isSubmergedInWater() && CRUtil.isGroundedOrAirborne(player, true)) {
-                    ascend = (float) MathHelper.clamp(ascend + 0.0025, boostStrength * 0.075, boostStrength);
-                    player.addVelocity(0, ascend, 0);
+                if (player.isUnderWater() && CRUtil.isGroundedOrAirborne(player, true)) {
+                    ascend = (float) Mth.clamp(ascend + 0.0025, boostStrength * 0.075, boostStrength);
+                    player.push(0, ascend, 0);
                 } else {
                     shouldAscend = false;
                     ascend = 0;
@@ -59,13 +59,13 @@ public class AscendWaterComponent implements AutoSyncedComponent, CommonTickingC
                 double x = player.getX();
                 double y = player.getY();
                 double z = player.getZ();
-                ParticleEffect bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
-                player.getWorld().addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
-                player.getWorld().addParticle(bubbleColumn, player.getParticleX(0.5), y + player.getHeight() / 8, player.getParticleZ(0.5), 0, 0.04, 0);
-                if (player.getWorld().getBlockState(player.getBlockPos().up()).isAir()) {
+                ParticleOptions bubbleColumn = ParticleTypes.BUBBLE_COLUMN_UP, splash = ParticleTypes.SPLASH, bubble = ParticleTypes.BUBBLE;
+                player.level().addParticle(bubbleColumn, x, y, z, 0, 0.04, 0);
+                player.level().addParticle(bubbleColumn, player.getRandomX(0.5), y + player.getBbHeight() / 8, player.getRandomZ(0.5), 0, 0.04, 0);
+                if (player.level().getBlockState(player.blockPosition().above()).isAir()) {
                     for (int i = 0; i < 2; i++) {
-                        player.getWorld().addParticle(splash, player.getParticleX(0.5), player.getBlockY() + 1, player.getParticleZ(0.5), 0, 1, 0);
-                        player.getWorld().addParticle(bubble, player.getParticleX(0.5), player.getBlockY() + 1, player.getParticleZ(0.5), 0, 0.2, 0);
+                        player.level().addParticle(splash, player.getRandomX(0.5), player.getBlockY() + 1, player.getRandomZ(0.5), 0, 1, 0);
+                        player.level().addParticle(bubble, player.getRandomX(0.5), player.getBlockY() + 1, player.getRandomZ(0.5), 0, 0.2, 0);
                     }
                 }
             }
@@ -82,12 +82,12 @@ public class AscendWaterComponent implements AutoSyncedComponent, CommonTickingC
         }
     }
 
-    public void readFromNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void readFromNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
         shouldAscend = tag.getBoolean("ShouldAscend");
         ascend = tag.getFloat("Ascend");
     }
 
-    public void writeToNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
+    public void writeToNbt(CompoundTag tag, HolderLookup.Provider registryLookup) {
         tag.putBoolean("ShouldAscend", shouldAscend);
         tag.putFloat("Ascend", ascend);
     }
@@ -101,6 +101,6 @@ public class AscendWaterComponent implements AutoSyncedComponent, CommonTickingC
     }
 
     public boolean canUse(boolean ignoreAscend) {
-        return (ignoreAscend || !shouldAscend) && player.isSubmergedInWater();
+        return (ignoreAscend || !shouldAscend) && player.isUnderWater();
     }
 }

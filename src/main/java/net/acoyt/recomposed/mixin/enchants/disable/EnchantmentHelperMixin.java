@@ -4,12 +4,12 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.acoyt.recomposed.impl.util.CRUtil;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.EnchantmentLevelEntry;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.core.Holder;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -21,29 +21,34 @@ import java.util.stream.Stream;
  */
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
-    @WrapMethod(method = "set")
-    private static void recomposed$removeIfDisabled(ItemStack stack, ItemEnchantmentsComponent enchantments, Operation<Void> original) {
-        ItemEnchantmentsComponent.Builder builder = new ItemEnchantmentsComponent.Builder(ItemEnchantmentsComponent.DEFAULT);
-        enchantments.getEnchantments().forEach(enchantment -> {
+    @WrapMethod(method = "setEnchantments")
+    private static void recomposed$removeIfDisabled(ItemStack stack, ItemEnchantments enchantments, Operation<Void> original) {
+        ItemEnchantments.Mutable builder = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
+        enchantments.keySet().forEach(enchantment -> {
             int level = enchantments.getLevel(enchantment);
             if (!CRUtil.isDisabled(enchantment)) {
-                builder.add(enchantment, level);
+                builder.upgrade(enchantment, level);
             }
         });
 
-        original.call(stack, builder.build());
+        original.call(stack, builder.toImmutable());
     }
 
     @WrapOperation(
-            method = "generateEnchantments",
+            method = "selectEnchantment",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/enchantment/EnchantmentHelper;getPossibleEntries(ILnet/minecraft/item/ItemStack;Ljava/util/stream/Stream;)Ljava/util/List;"
+                    target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getAvailableEnchantmentResults(ILnet/minecraft/world/item/ItemStack;Ljava/util/stream/Stream;)Ljava/util/List;"
             )
     )
-    private static List<EnchantmentLevelEntry> recomposed$removePossibilities(int level, ItemStack stack, Stream<RegistryEntry<Enchantment>> possibleEnchantments, Operation<List<EnchantmentLevelEntry>> original) {
-        List<EnchantmentLevelEntry> entries = original.call(level, stack, possibleEnchantments);
+    private static List<EnchantmentInstance> recomposed$removePossibilities(int level, ItemStack stack, Stream<Holder<Enchantment>> possibleEnchantments, Operation<List<EnchantmentInstance>> original) {
+        List<EnchantmentInstance> entries = original.call(level, stack, possibleEnchantments);
         entries.removeIf(entry -> CRUtil.isDisabled(entry.enchantment));
         return entries;
+    }
+
+    @WrapMethod(method = "getItemEnchantmentLevel")
+    private static int recomposed$zeroIfNullHolder(Holder<Enchantment> holder, ItemStack itemStack, Operation<Integer> original) {
+        return holder == null ? 0 : original.call(holder, itemStack);
     }
 }

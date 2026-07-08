@@ -2,7 +2,7 @@ package net.acoyt.recomposed.impl.index;
 
 import net.acoyt.acornlib.api.registrants.SoundEventRegistrant;
 import net.acoyt.recomposed.impl.Recomposed;
-import net.minecraft.sound.SoundEvent;
+import net.minecraft.sounds.SoundEvent;
 
 /**
  * @author AcoYT

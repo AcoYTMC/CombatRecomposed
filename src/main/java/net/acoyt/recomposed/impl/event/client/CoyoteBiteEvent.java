@@ -1,22 +1,22 @@
 package net.acoyt.recomposed.impl.event.client;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.Entity;
 
 /**
  * @author AcoYT
  */
 public class CoyoteBiteEvent implements ClientTickEvents.EndWorldTick {
-    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Minecraft client = Minecraft.getInstance();
 
     public static Entity target = null;
     public static int ticks = 0;
 
-    public void onEndTick(ClientWorld world) {
-        if (client.targetedEntity != null) {
-            target = client.targetedEntity;
+    public void onEndTick(ClientLevel world) {
+        if (client.crosshairPickEntity != null) {
+            target = client.crosshairPickEntity;
             ticks = 2;
         }
 

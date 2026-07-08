@@ -6,27 +6,26 @@ import dev.emi.trinkets.api.TrinketComponent;
 import dev.emi.trinkets.api.TrinketsApi;
 import net.acoyt.recomposed.impl.index.CRDataComponents;
 import net.acoyt.recomposed.impl.index.CRItems;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.Pair;
-
+import net.minecraft.core.Holder;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Tuple;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import java.util.Optional;
 
 /**
  * @author AcoYT
  */
 public class LifeVestItem extends Item implements Trinket {
-    public LifeVestItem(Settings settings) {
+    public LifeVestItem(Properties settings) {
         super(settings.component(CRDataComponents.IMMORTAL, true));
     }
 
-    public RegistryEntry<SoundEvent> getEquipSound(ItemStack stack, SlotReference slot, LivingEntity entity) {
-        return SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
+    public Holder<SoundEvent> getEquipSound(ItemStack stack, SlotReference slot, LivingEntity entity) {
+        return SoundEvents.ARMOR_EQUIP_GENERIC;
     }
 
     public static ItemStack getWorn(Entity entity) {
@@ -35,9 +34,9 @@ public class LifeVestItem extends Item implements Trinket {
         if (component.isEmpty()) return ItemStack.EMPTY;
 
         TrinketComponent trinkets = component.get();
-        for (Pair<SlotReference, ItemStack> pair : trinkets.getEquipped(stack -> stack.isOf(CRItems.LIFE_VEST))) {
-            if (pair.getLeft().inventory().getSlotType().getName().equals("trinket") && pair.getRight().isOf(CRItems.LIFE_VEST)) {
-                return pair.getRight();
+        for (Tuple<SlotReference, ItemStack> pair : trinkets.getEquipped(stack -> stack.is(CRItems.LIFE_VEST))) {
+            if (pair.getA().inventory().getSlotType().getName().equals("trinket") && pair.getB().is(CRItems.LIFE_VEST)) {
+                return pair.getB();
             }
         }
 

@@ -2,7 +2,7 @@ package net.acoyt.recomposed.mixin.enchants.level;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.acoyt.recomposed.impl.util.CRUtil;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

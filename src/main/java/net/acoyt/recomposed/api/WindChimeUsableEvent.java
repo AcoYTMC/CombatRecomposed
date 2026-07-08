@@ -2,9 +2,8 @@ package net.acoyt.recomposed.api;
 
 import net.fabricmc.fabric.api.event.Event;
 import net.fabricmc.fabric.api.event.EventFactory;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.world.World;
-
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -30,5 +29,5 @@ public interface WindChimeUsableEvent {
         return 1000;
     }
 
-    boolean canUse(PlayerEntity player, World world);
+    boolean canUse(Player player, Level world);
 }

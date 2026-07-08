@@ -1,18 +1,17 @@
 package net.acoyt.recomposed.impl.util;
 
 import net.acoyt.recomposed.api.FunctionalLevelEvent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.potion.Potion;
-import net.minecraft.potion.Potions;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.entry.RegistryEntryOwner;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderOwner;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.alchemy.Potions;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -22,10 +21,10 @@ import java.util.Map;
  * @author AcoYT
  */
 public class CRUtil {
-    public static RegistryEntryOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
+    public static HolderOwner<?> ENCHANTMENT_REGISTRY_OWNER = null;
     public static final Map<Enchantment, Integer> MAX_LEVELS = new HashMap<>();
 
-    public static final List<RegistryKey<Enchantment>> disabledEnchantments = Arrays.asList(
+    public static final List<ResourceKey<Enchantment>> disabledEnchantments = Arrays.asList(
             Enchantments.THORNS,
             Enchantments.UNBREAKING,
             Enchantments.MENDING,
@@ -37,33 +36,37 @@ public class CRUtil {
             Enchantments.WIND_BURST
     );
 
-    public static final List<RegistryEntry<Potion>> disabledPotions = Arrays.asList(
+    public static final List<Holder<Potion>> disabledPotions = Arrays.asList(
             Potions.STRENGTH,
             Potions.LONG_STRENGTH,
             Potions.STRONG_STRENGTH,
             Potions.STRONG_SWIFTNESS
     );
 
-    public static boolean isDisabled(RegistryEntry<Enchantment> enchantment) {
-        if (enchantment.getKey().isPresent()) {
-            return isDisabled(enchantment.getKey().get().getValue());
+    public static boolean isDisabled(Holder<Enchantment> enchantment) {
+        if (enchantment.unwrapKey().isPresent()) {
+            return isDisabled(enchantment.unwrapKey().get());
         }
 
         return false;
     }
 
-    public static boolean isDisabled(Identifier identifier) {
-        return disabledEnchantments.contains(RegistryKey.of(RegistryKeys.ENCHANTMENT, identifier));
+    public static boolean isDisabled(ResourceKey<?> resourceKey) {
+        return isDisabled(resourceKey.location());
     }
 
-    public static boolean isPotionDisabled(RegistryEntry<Potion> potion) {
+    public static boolean isDisabled(ResourceLocation identifier) {
+        return disabledEnchantments.contains(ResourceKey.create(Registries.ENCHANTMENT, identifier));
+    }
+
+    public static boolean isPotionDisabled(Holder<Potion> potion) {
         return disabledPotions.contains(potion);
     }
 
-    public static int getFunctionalLevel(RegistryEntry<Enchantment> enchantment) {
+    public static int getFunctionalLevel(Holder<Enchantment> enchantment) {
         return FunctionalLevelEvent.EVENT.invoker().getFunctionalLevel(enchantment).orElseGet(() -> {
-            if (enchantment.getKey().isPresent()) {
-                RegistryKey<Enchantment> key = enchantment.getKey().get();
+            if (enchantment.unwrapKey().isPresent()) {
+                ResourceKey<Enchantment> key = enchantment.unwrapKey().get();
                 if (key == Enchantments.PROTECTION) return 2;
                 if (key == Enchantments.SHARPNESS) return 2;
                 if (key == Enchantments.FEATHER_FALLING) return 2;
@@ -78,15 +81,15 @@ public class CRUtil {
     }
 
     public static boolean isGroundedOrAirborne(LivingEntity living, boolean allowWater) {
-        if (living instanceof PlayerEntity player && player.getAbilities().flying) {
+        if (living instanceof Player player && player.getAbilities().flying) {
             return false;
         }
         if (!allowWater) {
-            if (living.isTouchingWater() || living.isSwimming()) {
+            if (living.isInWater() || living.isSwimming()) {
                 return false;
             }
         }
 
-        return !living.isFallFlying() && !living.hasVehicle() && !living.isClimbing();
+        return !living.isFallFlying() && !living.isPassenger() && !living.onClimbable();
     }
 }

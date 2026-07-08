@@ -6,8 +6,8 @@ import net.acoyt.recomposed.data.provider.resources.CRModelGen;
 import net.acoyt.recomposed.impl.Recomposed;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataGenerator;
-import net.minecraft.registry.RegistryBuilder;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 
 /**
  * @author AcoYT
@@ -23,8 +23,8 @@ public class RecomposedDatagen implements DataGeneratorEntrypoint {
         pack.addProvider(CRDynamicRegistryGen::new);
     }
 
-    public void buildRegistry(RegistryBuilder builder) {
-        builder.addRegistry(RegistryKeys.ENCHANTMENT, registerable -> {
+    public void buildRegistry(RegistrySetBuilder builder) {
+        builder.add(Registries.ENCHANTMENT, registerable -> {
             registerable.register(Recomposed.EMPTY_KEY, Recomposed.EMPTY);
         });
     }

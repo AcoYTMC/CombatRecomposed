@@ -9,19 +9,19 @@ import net.acoyt.recomposed.impl.cca.entity.CombatTimerComponent;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
 import net.acoyt.recomposed.impl.item.LifeVestItem;
 import net.acoyt.recomposed.impl.item.WindChimeItem;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.vehicle.TntMinecartEntity;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import net.minecraft.core.Holder;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.vehicle.MinecartTNT;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -30,60 +30,60 @@ import org.spongepowered.asm.mixin.injection.At;
  */
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
-    public LivingEntityMixin(EntityType<?> type, World world) {
+    public LivingEntityMixin(EntityType<?> type, Level world) {
         super(type, world);
     }
 
     @WrapOperation(
-            method = "computeFallDamage",
+            method = "calculateFallDamage",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/LivingEntity;getAttributeValue(Lnet/minecraft/registry/entry/RegistryEntry;)D",
+                    target = "Lnet/minecraft/world/entity/LivingEntity;getAttributeValue(Lnet/minecraft/core/Holder;)D",
                     ordinal = 0
             )
     )
-    private double recomposed$reduceFallDamage(LivingEntity instance, RegistryEntry<EntityAttribute> attribute, Operation<Double> original) {
+    private double recomposed$reduceFallDamage(LivingEntity instance, Holder<Attribute> attribute, Operation<Double> original) {
         double value = original.call(instance, attribute);
         WindChimeComponent component = WindChimeComponent.KEY.getNullable(this);
-        if (component != null && component.getRemainingJumps() > 0 && instance instanceof PlayerEntity player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.getWorld())) {
-            return value + component.getRemainingJumps();
+        if (component != null && component.getJumpsLeft() > 0 && instance instanceof Player player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
+            return value + component.getJumpsLeft();
         }
 
         return value;
     }
 
     @WrapOperation(
-            method = "computeFallDamage",
+            method = "calculateFallDamage",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/util/math/MathHelper;ceil(D)I"
+                    target = "Lnet/minecraft/util/Mth;ceil(D)I"
             )
     )
     private int recomposed$dontPlayFallSound(double value, Operation<Integer> original, float fallDistance) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if (!(living instanceof PlayerEntity player)) return original.call(value);
+        if (!(living instanceof Player player)) return original.call(value);
         return fallDistance > 1.0F
                 && !WindChimeItem.getWorn(living).isEmpty()
-                && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.getWorld())
+                && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())
                     ? 0 : original.call(value);
     }
 
     @WrapOperation(
-            method = "damage",
+            method = "hurt",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"
+                    target = "Lnet/minecraft/world/entity/LivingEntity;actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V"
             )
     )
     private void recomposed$setCombatTimer(LivingEntity instance, DamageSource source, float amount, Operation<Void> original) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if (living instanceof PlayerEntity player && source.getAttacker() instanceof PlayerEntity attacker && !player.getWorld().isClient && CRConfig.combatTimer > 0) {
+        if (living instanceof Player player && source.getEntity() instanceof Player attacker && !player.level().isClientSide && CRConfig.combatTimer > 0) {
             CombatTimerComponent.KEY.get(player).setRemaining(CRConfig.combatTimer * 20); // 20s
             CombatTimerComponent.KEY.get(attacker).setRemaining(CRConfig.combatTimer * 20); // 20s
         }
 
-        if (source.getSource() instanceof TntMinecartEntity) {
-            amount = MathHelper.clamp(amount, 0.0F, CRConfig.minecartDamageCap);
+        if (source.getDirectEntity() instanceof MinecartTNT) {
+            amount = Mth.clamp(amount, 0.0F, CRConfig.minecartDamageCap);
         }
 
         original.call(instance, source, amount);
@@ -93,19 +93,19 @@ public abstract class LivingEntityMixin extends Entity {
             method = "travel",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/entity/LivingEntity;canWalkOnFluid(Lnet/minecraft/fluid/FluidState;)Z"
+                    target = "Lnet/minecraft/world/entity/LivingEntity;canStandOnFluid(Lnet/minecraft/world/level/material/FluidState;)Z"
             )
     )
     private boolean recomposed$walkOnWaterHehe(LivingEntity instance, FluidState state, Operation<Boolean> original) {
-        if (!LifeVestItem.getWorn(instance).isEmpty() && state.isIn(FluidTags.WATER)) {
+        if (!LifeVestItem.getWorn(instance).isEmpty() && state.is(FluidTags.WATER)) {
             return true;
         }
 
         return original.call(instance, state);
     }
 
-    @WrapMethod(method = "applyFluidMovingSpeed")
-    private Vec3d recomposed$noWaterSlowdown(double gravity, boolean falling, Vec3d motion, Operation<Vec3d> original) {
+    @WrapMethod(method = "getFluidFallingAdjustedMovement")
+    private Vec3 recomposed$noWaterSlowdown(double gravity, boolean falling, Vec3 motion, Operation<Vec3> original) {
         LivingEntity living = (LivingEntity)(Object)this;
         if (!LifeVestItem.getWorn(living).isEmpty()) {
             return motion;
