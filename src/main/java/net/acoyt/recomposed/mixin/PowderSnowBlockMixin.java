@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
  */
 @Mixin(PowderSnowBlock.class)
 public abstract class PowderSnowBlockMixin {
-    @WrapMethod(method = "canEntityWalkOnPowderSnow")
-    private static boolean recomposed$canWalkOnSnow(Entity entity, Operation<Boolean> original) {
-        return original.call(entity) || !LifeVestItem.getWorn(entity).isEmpty();
-    }
+//    @WrapMethod(method = "canEntityWalkOnPowderSnow")
+//    private static boolean recomposed$canWalkOnSnow(Entity entity, Operation<Boolean> original) {
+//        return original.call(entity) || !LifeVestItem.getWorn(entity).isEmpty();
+//    }
 }

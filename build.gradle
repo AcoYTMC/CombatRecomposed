@@ -79,6 +79,7 @@ dependencies {
 
     // Compat
     modCompileOnly "maven.modrinth:moonlight:${project.moonlight_version}"
+    modCompileOnly "maven.modrinth:farmers-delight-refabricated:${project.farmers_delight_version}"
 }
 
 processResources {

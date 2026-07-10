@@ -30,19 +30,19 @@ public abstract class PlayerMixin extends LivingEntity {
         return original;
     }
 
-    @WrapOperation(
-            method = "updateSwimming",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/LivingEntity;updateSwimming()V"
-            )
-    )
-    private void recomposed$noSwimming(Player instance, Operation<Void> original) {
-        if (!LifeVestItem.getWorn(instance).isEmpty()) {
-            instance.setSwimming(false);
-            return;
-        }
-
-        original.call(instance);
-    }
+//    @WrapOperation(
+//            method = "updateSwimming",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/minecraft/world/entity/LivingEntity;updateSwimming()V"
+//            )
+//    )
+//    private void recomposed$noSwimming(Player instance, Operation<Void> original) {
+//        if (!LifeVestItem.getWorn(instance).isEmpty()) {
+//            instance.setSwimming(false);
+//            return;
+//        }
+//
+//        original.call(instance);
+//    }
 }

@@ -89,28 +89,28 @@ public abstract class LivingEntityMixin extends Entity {
         original.call(instance, source, amount);
     }
 
-    @WrapOperation(
-            method = "travel",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/world/entity/LivingEntity;canStandOnFluid(Lnet/minecraft/world/level/material/FluidState;)Z"
-            )
-    )
-    private boolean recomposed$walkOnWaterHehe(LivingEntity instance, FluidState state, Operation<Boolean> original) {
-        if (!LifeVestItem.getWorn(instance).isEmpty() && state.is(FluidTags.WATER)) {
-            return true;
-        }
-
-        return original.call(instance, state);
-    }
-
-    @WrapMethod(method = "getFluidFallingAdjustedMovement")
-    private Vec3 recomposed$noWaterSlowdown(double gravity, boolean falling, Vec3 motion, Operation<Vec3> original) {
-        LivingEntity living = (LivingEntity)(Object)this;
-        if (!LifeVestItem.getWorn(living).isEmpty()) {
-            return motion;
-        }
-
-        return original.call(gravity, falling, motion);
-    }
+//    @WrapOperation(
+//            method = "travel",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/minecraft/world/entity/LivingEntity;canStandOnFluid(Lnet/minecraft/world/level/material/FluidState;)Z"
+//            )
+//    )
+//    private boolean recomposed$walkOnWaterHehe(LivingEntity instance, FluidState state, Operation<Boolean> original) {
+//        if (!LifeVestItem.getWorn(instance).isEmpty() && state.is(FluidTags.WATER)) {
+//            return true;
+//        }
+//
+//        return original.call(instance, state);
+//    }
+//
+//    @WrapMethod(method = "getFluidFallingAdjustedMovement")
+//    private Vec3 recomposed$noWaterSlowdown(double gravity, boolean falling, Vec3 motion, Operation<Vec3> original) {
+//        LivingEntity living = (LivingEntity)(Object)this;
+//        if (!LifeVestItem.getWorn(living).isEmpty()) {
+//            return motion;
+//        }
+//
+//        return original.call(gravity, falling, motion);
+//    }
 }

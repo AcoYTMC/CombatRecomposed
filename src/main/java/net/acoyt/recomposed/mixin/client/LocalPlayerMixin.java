@@ -20,27 +20,27 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         super(world, profile);
     }
 
-    @WrapOperation(
-            method = "aiStep",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z",
-                    ordinal = 0
-            )
-    )
-    private boolean recomposed$canSprint(LocalPlayer instance, Operation<Boolean> original) {
-        return original.call(instance) && !LifeVestItem.getWorn(instance).isEmpty();
-    }
-
-    @ModifyExpressionValue(
-            method = "aiStep",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z",
-                    ordinal = 1
-            )
-    )
-    private boolean recomposed$dontStopSprinting(boolean original) {
-        return original && !LifeVestItem.getWorn(this).isEmpty();
-    }
+//    @WrapOperation(
+//            method = "aiStep",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z",
+//                    ordinal = 0
+//            )
+//    )
+//    private boolean recomposed$canSprint(LocalPlayer instance, Operation<Boolean> original) {
+//        return original.call(instance) && !LifeVestItem.getWorn(instance).isEmpty();
+//    }
+//
+//    @ModifyExpressionValue(
+//            method = "aiStep",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/minecraft/client/player/LocalPlayer;isInWater()Z",
+//                    ordinal = 1
+//            )
+//    )
+//    private boolean recomposed$dontStopSprinting(boolean original) {
+//        return original && !LifeVestItem.getWorn(this).isEmpty();
+//    }
 }

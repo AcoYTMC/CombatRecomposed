@@ -19,16 +19,17 @@
         "ServerPlayerMixin",
         "WindChargeItemMixin",
         "access.LivingEntityAccessor",
+        "compat.farmersdelight.ItemUtilsMixin",
         "compat.moonlight.HolderRefMixin",
         "enchants.ItemEnchantmentsMixin",
         "enchants.disable.EnchantmentHelperMixin",
         "enchants.disable.EnchantRandomlyFunctionMixin",
-        "enchants.disable.HolderLookupProviderMixin",
         "enchants.disable.ItemEnchantmentsMutableMixin",
         "enchants.disable.SetEnchantmentsFunctionBuilderMixin",
         "enchants.disable.codec.BaseMapCodecMixin",
         "enchants.disable.codec.RegistryFileCodecMixin",
         "enchants.disable.codec.RegistryFixedCodecMixin",
+        "enchants.disable.holder.MappedRegistryMixin",
         "enchants.disable.internal.CreativeModeTabsMixin",
         "enchants.disable.internal.FileToIdConverterMixin",
         "enchants.disable.internal.HolderReferenceMixin",
@@ -42,7 +43,8 @@
         "potions.CreativeModeTabItemDisplayBuilderMixin",
         "potions.PotionBrewingBuilderMixin",
         "potions.PotionContentsMixin",
-        "potions.SetPotionFunctionMixin"
+        "potions.SetPotionFunctionMixin",
+        "trading.MerchantOfferMixin"
     ],
     "client": [
         "client.AbstractContainerMenuMixin",
