@@ -1,4 +1,4 @@
-package net.acoyt.recomposed.mixin.trading;
+package net.acoyt.recomposed.mixin.villagers;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;

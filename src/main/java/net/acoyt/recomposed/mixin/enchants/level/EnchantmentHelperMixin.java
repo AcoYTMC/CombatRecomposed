@@ -3,6 +3,7 @@ package net.acoyt.recomposed.mixin.enchants.level;
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.acoyt.recomposed.impl.index.tag.CRItemTags;
 import net.acoyt.recomposed.impl.util.CRUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.ItemStack;
@@ -42,7 +43,7 @@ public abstract class EnchantmentHelperMixin {
     @WrapMethod(method = "getItemEnchantmentLevel")
     private static int recomposed$universalLevel(Holder<Enchantment> enchantment, ItemStack stack, Operation<Integer> original) {
         int value = original.call(enchantment, stack);
-        return value > 0 ? CRUtil.getFunctionalLevel(enchantment) : value;
+        return value > 0 ? CRUtil.getFunctionalLevel(enchantment, stack.is(CRItemTags.STRONG)) : value;
     }
 
     @WrapOperation(
@@ -52,8 +53,8 @@ public abstract class EnchantmentHelperMixin {
                     target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentVisitor;accept(Lnet/minecraft/core/Holder;I)V"
             )
     )
-    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentVisitor instance, Holder<Enchantment> entry, int i, Operation<Void> original) {
-        original.call(instance, entry, CRUtil.getFunctionalLevel(entry));
+    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentVisitor instance, Holder<Enchantment> entry, int i, Operation<Void> original, ItemStack stack) {
+        original.call(instance, entry, CRUtil.getFunctionalLevel(entry, stack.is(CRItemTags.STRONG)));
     }
 
     @WrapOperation(
@@ -63,7 +64,7 @@ public abstract class EnchantmentHelperMixin {
                     target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentInSlotVisitor;accept(Lnet/minecraft/core/Holder;ILnet/minecraft/world/item/enchantment/EnchantedItemInUse;)V"
             )
     )
-    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentInSlotVisitor instance, Holder<Enchantment> entry, int i, EnchantedItemInUse enchantmentEffectContext, Operation<Void> original) {
-        original.call(instance, entry, CRUtil.getFunctionalLevel(entry), enchantmentEffectContext);
+    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentInSlotVisitor instance, Holder<Enchantment> entry, int i, EnchantedItemInUse enchantmentEffectContext, Operation<Void> original, ItemStack stack) {
+        original.call(instance, entry, CRUtil.getFunctionalLevel(entry, stack.is(CRItemTags.STRONG)), enchantmentEffectContext);
     }
 }

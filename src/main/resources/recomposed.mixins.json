@@ -44,7 +44,8 @@
         "potions.PotionBrewingBuilderMixin",
         "potions.PotionContentsMixin",
         "potions.SetPotionFunctionMixin",
-        "trading.MerchantOfferMixin"
+        "villagers.AbstractVillagerMixin",
+        "villagers.MerchantOfferMixin"
     ],
     "client": [
         "client.AbstractContainerMenuMixin",

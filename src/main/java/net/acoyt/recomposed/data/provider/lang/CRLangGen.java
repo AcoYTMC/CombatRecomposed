@@ -19,6 +19,10 @@ public class CRLangGen extends OrganizedLanguageProvider {
         CRItems.ITEMS.registerLang(registries, builder);
     }
 
+    public void generateSubtitles(HolderLookup.Provider registries, TranslationBuilder builder) {
+        builder.add("subtitles.entity.jump", "Entity Jumps");
+    }
+
     public void generateTags(HolderLookup.Provider registries, TranslationBuilder builder) {
         CRItemTags.ITEMS.registerLang(registries, builder);
     }

@@ -1,16 +1,13 @@
 package net.acoyt.recomposed.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.acoyt.recomposed.api.WindChimeUsableEvent;
 import net.acoyt.recomposed.compat.CRConfig;
 import net.acoyt.recomposed.impl.cca.entity.CombatTimerComponent;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
-import net.acoyt.recomposed.impl.item.LifeVestItem;
 import net.acoyt.recomposed.impl.item.WindChimeItem;
 import net.minecraft.core.Holder;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -20,8 +17,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.MinecartTNT;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 

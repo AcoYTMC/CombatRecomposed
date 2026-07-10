@@ -25,7 +25,7 @@ public abstract class ItemEnchantmentsMixin {
             )
     )
     private Component recomposed$setTemporaryValues(Holder<Enchantment> enchantment, int level, Operation<Component> original, @Local(argsOnly = true) TooltipFlag type) {
-        if (type.isAdvanced()) level = CRUtil.getFunctionalLevel(enchantment);
+        if (type.isAdvanced()) level = CRUtil.getFunctionalLevel(enchantment, false);
         return original.call(enchantment, level);
     }
 }

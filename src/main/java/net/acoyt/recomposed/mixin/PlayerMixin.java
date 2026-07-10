@@ -1,10 +1,7 @@
 package net.acoyt.recomposed.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
-import net.acoyt.recomposed.impl.item.LifeVestItem;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

@@ -64,17 +64,17 @@ public class CRUtil {
         return disabledPotions.contains(potion);
     }
 
-    public static int getFunctionalLevel(Holder<Enchantment> enchantment) {
+    public static int getFunctionalLevel(Holder<Enchantment> enchantment, boolean strong) {
         return FunctionalLevelEvent.EVENT.invoker().getFunctionalLevel(enchantment).orElseGet(() -> {
             if (enchantment.unwrapKey().isPresent()) {
                 ResourceKey<Enchantment> key = enchantment.unwrapKey().get();
                 if (key == Enchantments.PROTECTION) return 2;
                 if (key == Enchantments.SHARPNESS) return 2;
-                if (key == Enchantments.FEATHER_FALLING) return 2;
+                if (key == Enchantments.FEATHER_FALLING) return strong ? 3 : 2;
                 if (key == Enchantments.BLAST_PROTECTION) return 2;
                 if (key == Enchantments.KNOCKBACK) return 1;
-                if (key == Enchantments.RIPTIDE) return 2;
-                if (key == Enchantments.EFFICIENCY) return 4;
+                if (key == Enchantments.RIPTIDE) return 3;
+                if (key == Enchantments.EFFICIENCY) return strong ? 5 : 4;
             }
 
             return 1;

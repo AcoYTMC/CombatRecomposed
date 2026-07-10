@@ -1,7 +1,9 @@
 {
   "item.recomposed.life_vest": "Life Vest",
   "item.recomposed.wind_chime": "Wind Chime",
+  "subtitles.entity.jump": "Entity Jumps",
   "tag.item.recomposed.has_durability": "Has Durability",
+  "tag.item.recomposed.strong": "Strong",
   "tooltip.recomposed.in_combat": "You cannot use this in combat!",
   "trinkets.slot.misc.trinket": "Trinket"
 }
