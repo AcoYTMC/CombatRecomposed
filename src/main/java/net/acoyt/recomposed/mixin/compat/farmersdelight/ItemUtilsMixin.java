@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * @author AcoYT
  */
-@Mixin(ItemUtils.class)
+@Mixin(value = ItemUtils.class, remap = false)
 public abstract class ItemUtilsMixin {
     @WrapOperation(
             method = "getValidatedEnchantmentLevel",

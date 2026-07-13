@@ -40,8 +40,8 @@ public abstract class LivingEntityMixin extends Entity {
     private double recomposed$reduceFallDamage(LivingEntity instance, Holder<Attribute> attribute, Operation<Double> original) {
         double value = original.call(instance, attribute);
         WindChimeComponent component = WindChimeComponent.KEY.getNullable(this);
-        if (component != null && component.getJumpsUsed() > 0 && instance instanceof Player player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
-            return value + component.getJumpsUsed();
+        if (component != null && component.getRemainingJumps() > 0 && instance instanceof Player player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
+            return value + component.getRemainingJumps();
         }
 
         return value;
@@ -72,7 +72,7 @@ public abstract class LivingEntityMixin extends Entity {
     )
     private void recomposed$setCombatTimer(LivingEntity instance, DamageSource source, float amount, Operation<Void> original) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if (living instanceof Player player && source.getEntity() instanceof Player attacker && !player.level().isClientSide && CRConfig.combatTimer > 0) {
+        if (living instanceof Player player && source.getEntity() instanceof Player attacker && !player.equals(attacker) && !player.level().isClientSide && CRConfig.combatTimer > 0) {
             CombatTimerComponent.KEY.get(player).setRemaining(CRConfig.combatTimer * 20); // 20s
             CombatTimerComponent.KEY.get(attacker).setRemaining(CRConfig.combatTimer * 20); // 20s
         }

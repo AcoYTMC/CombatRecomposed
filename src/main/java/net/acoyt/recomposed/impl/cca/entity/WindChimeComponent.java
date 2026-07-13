@@ -39,19 +39,17 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void performDoubleJump() {
-        if (living.recomposed$getJumpingCooldown() <= 0 && getRemainingJumps() > 0) {
-            jumpsUsed++;
-            player.resetFallDistance();
-            living.recomposed$setJumpingCooldown(10);
-            sync();
+        jumpsUsed++;
+        player.resetFallDistance();
+        living.recomposed$setJumpingCooldown(10);
+        sync();
 
-            player.level().playSound(
-                    null,
-                    player.blockPosition(),
-                    SoundEvents.SAND_BREAK, SoundSource.PLAYERS,
-                    1.0F, 1.0F
-            );
-        }
+        player.level().playSound(
+                null,
+                player.blockPosition(),
+                SoundEvents.SAND_BREAK, SoundSource.PLAYERS,
+                1.0F, 1.0F
+        );
     }
 
     public void tick() {
@@ -66,15 +64,16 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
             jumpCooldown = 12;
             Vec3 vec3d = player.getDeltaMovement();
             if (player.isSprinting()) {
-                vec3d = new Vec3(vec3d.x * 1.25, 0.65 * (1 + player.getJumpBoostPower()), vec3d.z * 1.25);
+                vec3d = new Vec3(vec3d.x * 1.25, 0.75 * (1 + player.getJumpBoostPower()), vec3d.z * 1.25);
                 float f = player.getYRot() * 0.017453292F;
                 player.setDeltaMovement(vec3d.add(-Mth.sin(f) * 0.2F, 0.0D, Mth.cos(f) * 0.2F));
             } else {
-                player.setDeltaMovement(vec3d.x * 1.1, 0.55 * (1 + player.getJumpBoostPower()), vec3d.z * 1.1);
+                player.setDeltaMovement(vec3d.x * 1.1, 0.65 * (1 + player.getJumpBoostPower()), vec3d.z * 1.1);
             }
 
             player.hurtMarked = true;
             ClientPlayNetworking.send(new AirJumpPayload());
+            //jumpsUsed++;
         }
 
         if (player.onGround()) {
@@ -128,6 +127,6 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public boolean canJump() {
-        return jumpsUsed > 0 && jumpCooldown <= 0;
+        return getRemainingJumps() > 0 && jumpCooldown <= 0;
     }
 }
