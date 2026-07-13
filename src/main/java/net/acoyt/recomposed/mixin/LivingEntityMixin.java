@@ -40,8 +40,8 @@ public abstract class LivingEntityMixin extends Entity {
     private double recomposed$reduceFallDamage(LivingEntity instance, Holder<Attribute> attribute, Operation<Double> original) {
         double value = original.call(instance, attribute);
         WindChimeComponent component = WindChimeComponent.KEY.getNullable(this);
-        if (component != null && component.getJumpsLeft() > 0 && instance instanceof Player player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
-            return value + component.getJumpsLeft();
+        if (component != null && component.getJumpsUsed() > 0 && instance instanceof Player player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
+            return value + component.getJumpsUsed();
         }
 
         return value;

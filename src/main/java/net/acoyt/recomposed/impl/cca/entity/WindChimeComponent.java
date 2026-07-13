@@ -26,7 +26,7 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     public static final ComponentKey<WindChimeComponent> KEY = ComponentRegistry.getOrCreate(Recomposed.id("wind_chime"), WindChimeComponent.class);
     private final Player player;
     private final LivingEntityAccessor living;
-    private int jumpsLeft = getPossibleJumps();
+    private int jumpsUsed = 0;
     private int jumpCooldown = 0;
 
     public WindChimeComponent(Player player) {
@@ -39,8 +39,8 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void performDoubleJump() {
-        if (living.recomposed$getJumpingCooldown() <= 0 && getJumpsLeft() > 0) {
-            jumpsLeft--;
+        if (living.recomposed$getJumpingCooldown() <= 0 && getRemainingJumps() > 0) {
+            jumpsUsed++;
             player.resetFallDistance();
             living.recomposed$setJumpingCooldown(10);
             sync();
@@ -55,8 +55,8 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void tick() {
-        if (player.onGround() && jumpsLeft < getPossibleJumps()) {
-            jumpsLeft = getPossibleJumps();
+        if (player.onGround() && jumpsUsed > 0) {
+            jumpsUsed = 0;
             sync();
         }
     }
@@ -88,9 +88,9 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
         tick();
     }
 
-    public void readFromNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        int jumpsLeft = nbt.getInt("JumpsLeft");
-        if (player.level().isClientSide && jumpsLeft < this.jumpsLeft) {
+    public void readFromNbt(CompoundTag tag, HolderLookup.Provider provider) {
+        int jumpsUsed = tag.getInt("JumpsUsed");
+        if (player.level().isClientSide && jumpsUsed > this.jumpsUsed) {
             for (int i = 0; i < 12; i++) {
                 Vec3 pos = new Vec3(
                         player.getX() + player.getRandom().nextGaussian() * 0.2F,
@@ -112,22 +112,22 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
             }
         }
 
-        this.jumpsLeft = jumpsLeft;
+        this.jumpsUsed = jumpsUsed;
     }
 
-    public void writeToNbt(CompoundTag nbt, HolderLookup.Provider registries) {
-        nbt.putInt("JumpsLeft", jumpsLeft);
-    }
-
-    public int getJumpsLeft() {
-        return jumpsLeft;
-    }
-
-    public boolean canJump() {
-        return jumpsLeft > 0 && jumpCooldown <= 0;
+    public void writeToNbt(CompoundTag tag, HolderLookup.Provider provider) {
+        tag.putInt("JumpsUsed", jumpsUsed);
     }
 
     public int getPossibleJumps() {
         return !WindChimeItem.getWorn(player).isEmpty() ? 2 : 0;
+    }
+
+    public int getRemainingJumps() {
+        return getPossibleJumps() - jumpsUsed;
+    }
+
+    public boolean canJump() {
+        return jumpsUsed > 0 && jumpCooldown <= 0;
     }
 }

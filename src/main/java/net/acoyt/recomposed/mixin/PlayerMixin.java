@@ -20,7 +20,7 @@ public abstract class PlayerMixin extends LivingEntity {
 
     @ModifyReturnValue(method = "getFlyingSpeed", at = @At("RETURN"))
     private float recomposed$windChimeBunnyHopping(float original) {
-        if (WindChimeComponent.KEY.get(this).getPossibleJumps() > WindChimeComponent.KEY.get(this).getJumpsLeft()) {
+        if (WindChimeComponent.KEY.get(this).getPossibleJumps() > WindChimeComponent.KEY.get(this).getJumpsUsed()) {
             return original * 1.65F;
         }
 
