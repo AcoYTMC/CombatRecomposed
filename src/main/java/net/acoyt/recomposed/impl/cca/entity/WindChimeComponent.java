@@ -60,7 +60,7 @@ public class WindChimeComponent implements AutoSyncedComponent, CommonTickingCom
     }
 
     public void clientTick() {
-        if (living.recomposed$isJumping() && canJump() && player.fallDistance > 0.2F && !player.getAbilities().flying && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
+        if (living.recomposed$isJumping() && canJump() && player.fallDistance > 0.3F && !player.isUnderWater() && !player.getAbilities().flying && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level()) && jumpCooldown <= 0) {
             jumpCooldown = 12;
             Vec3 vec3d = player.getDeltaMovement();
             if (player.isSprinting()) {

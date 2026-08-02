@@ -1,13 +1,23 @@
 package net.acoyt.recomposed.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketComponent;
+import dev.emi.trinkets.api.TrinketsApi;
 import net.acoyt.recomposed.impl.cca.entity.WindChimeComponent;
+import net.acoyt.recomposed.impl.index.tag.CRItemTags;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.Optional;
 
 /**
  * @author AcoYT
@@ -25,6 +35,26 @@ public abstract class PlayerMixin extends LivingEntity {
         }
 
         return original;
+    }
+
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void recomposed$tickTrinkets(CallbackInfo ci) {
+        Player player = (Player)(Object)this;
+        ItemStack trinketStack = ItemStack.EMPTY;
+
+        Optional<TrinketComponent> component = TrinketsApi.getTrinketComponent(this);
+        if (component.isEmpty()) return;
+
+        TrinketComponent trinkets = component.get();
+        for (Tuple<SlotReference, ItemStack> pair : trinkets.getEquipped(stack -> stack.is(CRItemTags.TRINKETS))) {
+            if (pair.getA().inventory().getSlotType().getName().equals("trinket") && pair.getB().is(CRItemTags.TRINKETS)) {
+                trinketStack = pair.getB();
+            }
+        }
+
+        if (!trinketStack.isEmpty()) {
+            trinketStack.inventoryTick(player.level(), player, -1, false);
+        }
     }
 
 //    @WrapOperation(

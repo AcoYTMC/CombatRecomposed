@@ -20,8 +20,8 @@ import java.util.Optional;
  * @author AcoYT
  */
 public class WindChimeItem extends Item implements Trinket {
-    public WindChimeItem(Properties settings) {
-        super(settings.component(CRDataComponents.IMMORTAL, true));
+    public WindChimeItem(Properties properties) {
+        super(properties);
     }
 
     public Holder<SoundEvent> getEquipSound(ItemStack stack, SlotReference slot, LivingEntity entity) {

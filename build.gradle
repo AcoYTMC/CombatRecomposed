@@ -1,6 +1,7 @@
 plugins {
 	id 'net.fabricmc.fabric-loom-remap' version "${loom_version}"
 	id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 version = project.mod_version
@@ -38,6 +39,7 @@ repositories {
 		name = "Ladysnake Mods"
 		url = 'https://maven.ladysnake.org/releases'
 	}
+    mavenCentral()
 }
 
 loom {
@@ -80,6 +82,7 @@ dependencies {
     // Compat
     modCompileOnly "maven.modrinth:moonlight:${project.moonlight_version}"
     modCompileOnly "maven.modrinth:farmers-delight-refabricated:${project.farmers_delight_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 processResources {
@@ -101,8 +104,6 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_21
-	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
@@ -129,4 +130,7 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
+}
+kotlin {
+    jvmToolchain(21)
 }

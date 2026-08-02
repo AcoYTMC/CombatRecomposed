@@ -1,9 +1,13 @@
 {
   "item.recomposed.life_vest": "Life Vest",
+  "item.recomposed.sapphire_crystal": "Sapphire Crystal",
+  "item.recomposed.sapphire_crystal.tooltip": "Crouch while in water to refill charges!",
   "item.recomposed.wind_chime": "Wind Chime",
   "subtitles.entity.jump": "Entity Jumps",
   "tag.item.recomposed.has_durability": "Has Durability",
   "tag.item.recomposed.strong": "Strong",
+  "tag.item.recomposed.trinkets": "Trinkets",
+  "tooltip.recomposed.hold_shift": "Hold %1$s for more info",
   "tooltip.recomposed.in_combat": "You cannot use this in combat!",
   "trinkets.slot.misc.trinket": "Trinket"
 }

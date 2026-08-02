@@ -75,6 +75,8 @@ public class CRUtil {
                 if (key == Enchantments.KNOCKBACK) return 1;
                 if (key == Enchantments.RIPTIDE) return 3;
                 if (key == Enchantments.EFFICIENCY) return strong ? 5 : 4;
+                if (key == Enchantments.SOUL_SPEED) return 2;
+                if (key == Enchantments.SWIFT_SNEAK) return 2;
             }
 
             return 1;

@@ -20,8 +20,8 @@ import java.util.Optional;
  * @author AcoYT
  */
 public class LifeVestItem extends Item implements Trinket {
-    public LifeVestItem(Properties settings) {
-        super(settings.component(CRDataComponents.IMMORTAL, true));
+    public LifeVestItem(Properties properties) {
+        super(properties);
     }
 
     public Holder<SoundEvent> getEquipSound(ItemStack stack, SlotReference slot, LivingEntity entity) {

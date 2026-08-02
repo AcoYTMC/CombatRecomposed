@@ -8,8 +8,8 @@ import java.util.Map;
 /**
  * @author AcoYT
  */
-public class CRRemoveRecipesEvent implements FilterRecipesEvent {
-    public void filterRecipesByType(Map<ResourceLocation, RecipeHolder<?>> entries) {
-        entries.remove(ResourceLocation.withDefaultNamespace("shield"));
+public class RemoveRecipesEvent implements FilterRecipesEvent {
+    public void filterRecipes(Map<ResourceLocation, RecipeHolder<?>> entries) {
+        //entries.remove(ResourceLocation.withDefaultNamespace("shield"));
     }
 }

@@ -8,7 +8,7 @@ import net.minecraft.world.level.Level;
 /**
  * @author AcoYT
  */
-public class CRCombatTimerEvent implements WindChimeUsableEvent {
+public class CombatTimerEvent implements WindChimeUsableEvent {
     public boolean canUse(Player player, Level world) {
         //player.sendMessage(Text.translatable("tooltip.recomposed.in_combat"), true);
         return CombatTimerComponent.KEY.get(player).getRemaining() <= 0;

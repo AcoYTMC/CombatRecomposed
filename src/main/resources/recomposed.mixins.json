@@ -17,6 +17,7 @@
         "PowderSnowBlockMixin",
         "ServerGamePacketListenerImplMixin",
         "ServerPlayerMixin",
+        "TridentItemMixin",
         "WindChargeItemMixin",
         "access.LivingEntityAccessor",
         "compat.farmersdelight.ItemUtilsMixin",

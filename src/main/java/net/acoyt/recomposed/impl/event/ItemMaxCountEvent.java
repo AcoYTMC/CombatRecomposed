@@ -1,6 +1,5 @@
 package net.acoyt.recomposed.impl.event;
 
-import net.acoyt.recomposed.api.ItemMaxCountEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -11,7 +10,7 @@ import java.util.Optional;
 /**
  * @author AcoYT
  */
-public class CRItemMaxCountEvent implements ItemMaxCountEvent {
+public class ItemMaxCountEvent implements net.acoyt.recomposed.api.ItemMaxCountEvent {
     public Optional<Integer> getMaxCount(Player player, ItemStack stack) {
         return Optional.ofNullable(get(stack));
     }

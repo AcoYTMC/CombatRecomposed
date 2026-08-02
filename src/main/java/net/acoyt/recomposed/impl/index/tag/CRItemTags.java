@@ -14,4 +14,5 @@ public interface CRItemTags {
 
     TagKey<Item> HAS_DURABILITY = ITEMS.register("has_durability");
     TagKey<Item> STRONG = ITEMS.register("strong");
+    TagKey<Item> TRINKETS = ITEMS.register("trinkets");
 }

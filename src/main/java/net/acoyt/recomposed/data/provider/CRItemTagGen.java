@@ -7,6 +7,7 @@ import net.minecraft.core.HolderLookup;
 
 import java.util.concurrent.CompletableFuture;
 
+import static net.acoyt.recomposed.impl.index.CRItems.*;
 import static net.minecraft.world.item.Items.*;
 
 /**
@@ -25,6 +26,10 @@ public class CRItemTagGen extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(CRItemTags.STRONG)
                 .add(GOLDEN_SWORD, GOLDEN_SHOVEL, GOLDEN_PICKAXE, GOLDEN_AXE, GOLDEN_HOE)
                 .add(NETHERITE_SWORD, NETHERITE_SHOVEL, NETHERITE_PICKAXE, NETHERITE_AXE, NETHERITE_HOE)
+                .setReplace(false);
+
+        this.getOrCreateTagBuilder(CRItemTags.TRINKETS)
+                .add(WIND_CHIME, LIFE_VEST, SAPPHIRE_CRYSTAL)
                 .setReplace(false);
     }
 }
