@@ -59,5 +59,14 @@ public class LootTableModifiers implements LootTableEvents.Replace, LootTableEve
 
             tableBuilder.withPool(poolBuilder);
         }
+
+        if (key.equals(BuiltInLootTables.UNDERWATER_RUIN_BIG) || key.equals(BuiltInLootTables.UNDERWATER_RUIN_SMALL)) {
+            LootPool.Builder poolBuilder = LootPool.lootPool()
+                    .setRolls(UniformGenerator.between(1.0F, 1.0F))
+                    .when(LootItemRandomChanceCondition.randomChance(0.4F))
+                    .add(LootItem.lootTableItem(CRItems.SAPPHIRE_CRYSTAL));
+
+            tableBuilder.withPool(poolBuilder);
+        }
     }
 }

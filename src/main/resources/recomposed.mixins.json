@@ -9,6 +9,7 @@
         "EnchantmentMixin",
         "EntityCollisionContextMixin",
         "IgniteMixin",
+        "ItemEntityMixin",
         "ItemMixin",
         "ItemStackMixin",
         "LivingEntityMixin",
