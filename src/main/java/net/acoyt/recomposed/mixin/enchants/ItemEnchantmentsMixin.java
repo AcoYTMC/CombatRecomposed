@@ -24,8 +24,8 @@ public abstract class ItemEnchantmentsMixin {
                     target = "Lnet/minecraft/world/item/enchantment/Enchantment;getFullname(Lnet/minecraft/core/Holder;I)Lnet/minecraft/network/chat/Component;"
             )
     )
-    private Component recomposed$setTemporaryValues(Holder<Enchantment> enchantment, int level, Operation<Component> original, @Local(argsOnly = true) TooltipFlag type) {
-        if (type.isAdvanced()) level = CRUtil.getFunctionalLevel(enchantment, false);
-        return original.call(enchantment, level);
+    private Component recomposed$setTemporaryValues(Holder<Enchantment> holder, int level, Operation<Component> original, @Local(argsOnly = true) TooltipFlag tooltipFlag) {
+        if (tooltipFlag.isAdvanced()) level = CRUtil.getFunctionalLevel(holder, false);
+        return original.call(holder, level);
     }
 }

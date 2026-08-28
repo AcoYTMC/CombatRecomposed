@@ -24,16 +24,16 @@ public abstract class HumanoidModelMixin<T extends LivingEntity> {
     @Shadow @Final public ModelPart head;
 
     @Inject(method = "poseRightArm", at = @At("TAIL"))
-    private void recomposed$rightArmWindChime(T entity, CallbackInfo ci) {
-        if (ItemUtils.getHeldStacks(entity).stream().anyMatch(stack -> stack.is(CRItems.WIND_CHIME)) && entity.getMainArm() == HumanoidArm.RIGHT) {
-            positionArmForWindChime(this.rightArm, this.leftArm, this.head, entity.getMainHandItem().is(CRItems.WIND_CHIME));
+    private void recomposed$rightArmWindChime(T livingEntity, CallbackInfo ci) {
+        if (ItemUtils.getHeldStacks(livingEntity).stream().anyMatch(stack -> stack.is(CRItems.WIND_CHIME)) && livingEntity.getMainArm() == HumanoidArm.RIGHT) {
+            positionArmForWindChime(this.rightArm, this.leftArm, this.head, livingEntity.getMainHandItem().is(CRItems.WIND_CHIME));
         }
     }
 
     @Inject(method = "poseLeftArm", at = @At("TAIL"))
-    private void recomposed$leftArmWindChime(T entity, CallbackInfo ci) {
-        if (ItemUtils.getHeldStacks(entity).stream().anyMatch(stack -> stack.is(CRItems.WIND_CHIME)) && entity.getMainArm() != HumanoidArm.RIGHT) {
-            positionArmForWindChime(this.rightArm, this.leftArm, this.head, entity.getOffhandItem().is(CRItems.WIND_CHIME));
+    private void recomposed$leftArmWindChime(T livingEntity, CallbackInfo ci) {
+        if (ItemUtils.getHeldStacks(livingEntity).stream().anyMatch(stack -> stack.is(CRItems.WIND_CHIME)) && livingEntity.getMainArm() != HumanoidArm.RIGHT) {
+            positionArmForWindChime(this.rightArm, this.leftArm, this.head, livingEntity.getOffhandItem().is(CRItems.WIND_CHIME));
         }
     }
 

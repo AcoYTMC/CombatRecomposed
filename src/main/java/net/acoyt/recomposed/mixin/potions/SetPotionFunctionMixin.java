@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(SetPotionFunction.class)
 public abstract class SetPotionFunctionMixin {
     @WrapMethod(method = "run")
-    private ItemStack recomposed$dontSetIfDisable(ItemStack stack, LootContext context, Operation<ItemStack> original) {
-        ItemStack value = original.call(stack, context);
+    private ItemStack recomposed$dontSetIfDisable(ItemStack itemStack, LootContext lootContext, Operation<ItemStack> original) {
+        ItemStack value = original.call(itemStack, lootContext);
         PotionContents contents = value.get(DataComponents.POTION_CONTENTS);
         if (contents != null && contents.potion().isPresent() && CRUtil.isPotionDisabled(contents.potion().get())) {
             return ItemStack.EMPTY;

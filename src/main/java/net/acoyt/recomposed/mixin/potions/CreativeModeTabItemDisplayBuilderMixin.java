@@ -12,8 +12,8 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(CreativeModeTab.ItemDisplayBuilder.class)
 public abstract class CreativeModeTabItemDisplayBuilderMixin {
     @WrapMethod(method = "accept")
-    private void recomposed$dontAddIfEmpty(ItemStack stack, CreativeModeTab.TabVisibility visibility, Operation<Void> original) {
-        if (stack.isEmpty()) return;
-        original.call(stack, visibility);
+    private void recomposed$dontAddIfEmpty(ItemStack itemStack, CreativeModeTab.TabVisibility tabVisibility, Operation<Void> original) {
+        if (itemStack.isEmpty()) return;
+        original.call(itemStack, tabVisibility);
     }
 }

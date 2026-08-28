@@ -23,7 +23,7 @@ public abstract class EnchantRandomlyFunctionMixin {
                     target = "Lnet/minecraft/Util;getRandomSafe(Ljava/util/List;Lnet/minecraft/util/RandomSource;)Ljava/util/Optional;"
             )
     )
-    private <T extends Holder<Enchantment>> Optional<T> recomposed$disableEnchants(List<T> list, RandomSource random, Operation<Optional<T>> original) {
+    private <T extends Holder<Enchantment>> Optional<T> recomposed$disableEnchants(List<T> list, RandomSource randomSource, Operation<Optional<T>> original) {
         List<T> filtered = new ArrayList<>();
         for (T var : list) {
             if (var.unwrapKey().isPresent() && !CRUtil.isDisabled(var.unwrapKey().get())) {
@@ -31,6 +31,6 @@ public abstract class EnchantRandomlyFunctionMixin {
             }
         }
 
-        return original.call(filtered, random);
+        return original.call(filtered, randomSource);
     }
 }

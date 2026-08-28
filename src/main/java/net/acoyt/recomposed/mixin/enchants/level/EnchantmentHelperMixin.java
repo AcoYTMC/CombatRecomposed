@@ -34,16 +34,16 @@ public abstract class EnchantmentHelperMixin {
     }
 
     @ModifyVariable(method = "setEnchantments", at = @At("HEAD"), argsOnly = true)
-    private static ItemEnchantments recomposed$universalLevel(ItemEnchantments enchantments, ItemStack stack) {
-        ItemEnchantments.Mutable builder = new ItemEnchantments.Mutable(enchantments);
-        enchantments.keySet().forEach(enchantment -> builder.set(enchantment, 1));
+    private static ItemEnchantments recomposed$universalLevel(ItemEnchantments itemEnchantments, ItemStack itemStack) {
+        ItemEnchantments.Mutable builder = new ItemEnchantments.Mutable(itemEnchantments);
+        itemEnchantments.keySet().forEach(enchantment -> builder.set(enchantment, 1));
         return builder.toImmutable();
     }
 
     @WrapMethod(method = "getItemEnchantmentLevel")
-    private static int recomposed$universalLevel(Holder<Enchantment> enchantment, ItemStack stack, Operation<Integer> original) {
-        int value = original.call(enchantment, stack);
-        return value > 0 ? CRUtil.getFunctionalLevel(enchantment, stack.is(CRItemTags.STRONG)) : value;
+    private static int recomposed$universalLevel(Holder<Enchantment> holder, ItemStack itemStack, Operation<Integer> original) {
+        int value = original.call(holder, itemStack);
+        return value > 0 ? CRUtil.getFunctionalLevel(holder, itemStack.is(CRItemTags.STRONG)) : value;
     }
 
     @WrapOperation(
@@ -53,8 +53,8 @@ public abstract class EnchantmentHelperMixin {
                     target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentVisitor;accept(Lnet/minecraft/core/Holder;I)V"
             )
     )
-    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentVisitor instance, Holder<Enchantment> entry, int i, Operation<Void> original, ItemStack stack) {
-        original.call(instance, entry, CRUtil.getFunctionalLevel(entry, stack.is(CRItemTags.STRONG)));
+    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentVisitor instance, Holder<Enchantment> entry, int i, Operation<Void> original, ItemStack itemStack) {
+        original.call(instance, entry, CRUtil.getFunctionalLevel(entry, itemStack.is(CRItemTags.STRONG)));
     }
 
     @WrapOperation(
@@ -64,7 +64,7 @@ public abstract class EnchantmentHelperMixin {
                     target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper$EnchantmentInSlotVisitor;accept(Lnet/minecraft/core/Holder;ILnet/minecraft/world/item/enchantment/EnchantedItemInUse;)V"
             )
     )
-    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentInSlotVisitor instance, Holder<Enchantment> entry, int i, EnchantedItemInUse enchantmentEffectContext, Operation<Void> original, ItemStack stack) {
-        original.call(instance, entry, CRUtil.getFunctionalLevel(entry, stack.is(CRItemTags.STRONG)), enchantmentEffectContext);
+    private static void recomposed$enchantmentStrength(EnchantmentHelper.EnchantmentInSlotVisitor instance, Holder<Enchantment> entry, int i, EnchantedItemInUse enchantmentEffectContext, Operation<Void> original, ItemStack itemStack) {
+        original.call(instance, entry, CRUtil.getFunctionalLevel(entry, itemStack.is(CRItemTags.STRONG)), enchantmentEffectContext);
     }
 }

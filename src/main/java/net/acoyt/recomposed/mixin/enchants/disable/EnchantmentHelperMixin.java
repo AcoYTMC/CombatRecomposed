@@ -22,16 +22,16 @@ import java.util.stream.Stream;
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
     @WrapMethod(method = "setEnchantments")
-    private static void recomposed$removeIfDisabled(ItemStack stack, ItemEnchantments enchantments, Operation<Void> original) {
+    private static void recomposed$removeIfDisabled(ItemStack itemStack, ItemEnchantments itemEnchantments, Operation<Void> original) {
         ItemEnchantments.Mutable builder = new ItemEnchantments.Mutable(ItemEnchantments.EMPTY);
-        enchantments.keySet().forEach(enchantment -> {
-            int level = enchantments.getLevel(enchantment);
+        itemEnchantments.keySet().forEach(enchantment -> {
+            int level = itemEnchantments.getLevel(enchantment);
             if (!CRUtil.isDisabled(enchantment)) {
                 builder.upgrade(enchantment, level);
             }
         });
 
-        original.call(stack, builder.toImmutable());
+        original.call(itemStack, builder.toImmutable());
     }
 
     @WrapOperation(
@@ -41,8 +41,8 @@ public abstract class EnchantmentHelperMixin {
                     target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getAvailableEnchantmentResults(ILnet/minecraft/world/item/ItemStack;Ljava/util/stream/Stream;)Ljava/util/List;"
             )
     )
-    private static List<EnchantmentInstance> recomposed$removePossibilities(int level, ItemStack stack, Stream<Holder<Enchantment>> possibleEnchantments, Operation<List<EnchantmentInstance>> original) {
-        List<EnchantmentInstance> entries = original.call(level, stack, possibleEnchantments);
+    private static List<EnchantmentInstance> recomposed$removePossibilities(int i, ItemStack itemStack, Stream<Holder<Enchantment>> stream, Operation<List<EnchantmentInstance>> original) {
+        List<EnchantmentInstance> entries = original.call(i, itemStack, stream);
         entries.removeIf(entry -> CRUtil.isDisabled(entry.enchantment));
         return entries;
     }

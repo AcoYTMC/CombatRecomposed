@@ -68,15 +68,24 @@ public class CRUtil {
         return FunctionalLevelEvent.EVENT.invoker().getFunctionalLevel(enchantment).orElseGet(() -> {
             if (enchantment.unwrapKey().isPresent()) {
                 ResourceKey<Enchantment> key = enchantment.unwrapKey().get();
-                if (key == Enchantments.PROTECTION) return 2;
+
+                // Weapon
                 if (key == Enchantments.SHARPNESS) return 2;
-                if (key == Enchantments.FEATHER_FALLING) return strong ? 3 : 2;
-                if (key == Enchantments.BLAST_PROTECTION) return 2;
-                if (key == Enchantments.KNOCKBACK) return 1;
-                if (key == Enchantments.RIPTIDE) return 3;
+                if (key == Enchantments.LOOTING) return strong ? 3 : 2;
+
+                // Tool
                 if (key == Enchantments.EFFICIENCY) return strong ? 5 : 4;
-                if (key == Enchantments.SOUL_SPEED) return 2;
-                if (key == Enchantments.SWIFT_SNEAK) return 2;
+                if (key == Enchantments.RIPTIDE) return 3;
+                if (key == Enchantments.LOYALTY) return 3;
+
+                // Armor
+                if (key == Enchantments.PROTECTION) return 2;
+                if (key == Enchantments.FEATHER_FALLING) return strong ? 4 : 2;
+                if (key == Enchantments.BLAST_PROTECTION) return 2;
+                if (key == Enchantments.RESPIRATION) return 3;
+                if (key == Enchantments.DEPTH_STRIDER) return 3;
+                if (key == Enchantments.SOUL_SPEED) return 3;
+                if (key == Enchantments.SWIFT_SNEAK) return 3;
             }
 
             return 1;

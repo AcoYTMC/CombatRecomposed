@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(PotionContents.class)
 public abstract class PotionContentsMixin {
     @WrapMethod(method = "createItemStack")
-    private static ItemStack recomposed$returnEmptyIfDisabled(Item item, Holder<Potion> potion, Operation<ItemStack> original) {
-        if (CRUtil.isPotionDisabled(potion)) return ItemStack.EMPTY;
-        return original.call(item, potion);
+    private static ItemStack recomposed$returnEmptyIfDisabled(Item item, Holder<Potion> holder, Operation<ItemStack> original) {
+        if (CRUtil.isPotionDisabled(holder)) return ItemStack.EMPTY;
+        return original.call(item, holder);
     }
 }

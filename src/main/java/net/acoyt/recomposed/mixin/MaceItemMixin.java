@@ -26,11 +26,11 @@ public abstract class MaceItemMixin extends Item {
     }
 
     @WrapMethod(method = "canSmashAttack")
-    private static boolean recomposed$noSlamIfCooldown(LivingEntity attacker, Operation<Boolean> original) {
-        if (attacker instanceof Player player && player.getCooldowns().isOnCooldown(Items.MACE)) {
+    private static boolean recomposed$noSlamIfCooldown(LivingEntity livingEntity, Operation<Boolean> original) {
+        if (livingEntity instanceof Player player && player.getCooldowns().isOnCooldown(Items.MACE)) {
             return false;
         }
 
-        return original.call(attacker);
+        return original.call(livingEntity);
     }
 }

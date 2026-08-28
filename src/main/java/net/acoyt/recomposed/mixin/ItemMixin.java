@@ -25,8 +25,8 @@ public abstract class ItemMixin {
             )
     )
     private boolean recomposed$noChugging(FoodProperties instance, Operation<Boolean> original,
-                                          @Local(argsOnly = true) Player user, @Local(argsOnly = true) InteractionHand hand) {
-        ItemStack stack = user.getItemInHand(hand);
+                                          @Local(argsOnly = true) Player player, @Local(argsOnly = true) InteractionHand interactionHand) {
+        ItemStack stack = player.getItemInHand(interactionHand);
         return original.call(instance) && !stack.is(Items.ENCHANTED_GOLDEN_APPLE);
     }
 }

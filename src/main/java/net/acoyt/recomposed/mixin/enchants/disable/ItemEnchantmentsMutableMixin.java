@@ -14,14 +14,14 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(ItemEnchantments.Mutable.class)
 public abstract class ItemEnchantmentsMutableMixin {
     @WrapMethod(method = "set")
-    private void recomposed$removedIfDisabled(Holder<Enchantment> enchantment, int level, Operation<Void> original) {
-        if (CRUtil.isDisabled(enchantment)) return;
-        original.call(enchantment, level);
+    private void recomposed$removedIfDisabled(Holder<Enchantment> holder, int i, Operation<Void> original) {
+        if (CRUtil.isDisabled(holder)) return;
+        original.call(holder, i);
     }
 
     @WrapMethod(method = "upgrade")
-    private void recomposed$dontAddIfDisabled(Holder<Enchantment> enchantment, int level, Operation<Void> original) {
-        if (CRUtil.isDisabled(enchantment)) return;
-        original.call(enchantment, level);
+    private void recomposed$dontAddIfDisabled(Holder<Enchantment> holder, int i, Operation<Void> original) {
+        if (CRUtil.isDisabled(holder)) return;
+        original.call(holder, i);
     }
 }

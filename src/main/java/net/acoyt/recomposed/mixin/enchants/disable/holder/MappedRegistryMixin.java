@@ -16,9 +16,9 @@ import java.util.Optional;
 @Mixin(MappedRegistry.class)
 public abstract class MappedRegistryMixin {
     @WrapMethod(method = "getHolder(Lnet/minecraft/resources/ResourceKey;)Ljava/util/Optional;")
-    private <T> Optional<Holder.Reference<T>> recomposed$nullFixHopefully(ResourceKey<T> key, Operation<Optional<Holder.Reference<T>>> original) {
-        return CRUtil.isDisabled(key)
+    private <T> Optional<Holder.Reference<T>> recomposed$nullFixHopefully(ResourceKey<T> resourceKey, Operation<Optional<Holder.Reference<T>>> original) {
+        return CRUtil.isDisabled(resourceKey)
                 ? Optional.empty()
-                : original.call(key);
+                : original.call(resourceKey);
     }
 }

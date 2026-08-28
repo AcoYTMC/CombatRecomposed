@@ -5,9 +5,11 @@ import net.acoyt.recomposed.impl.event.client.ChimeStepEvent;
 import net.acoyt.recomposed.impl.event.client.CoyoteBiteEvent;
 import net.acoyt.recomposed.impl.event.client.ItemTooltipsEvent;
 import net.acoyt.recomposed.impl.networking.CRNetworking;
+import net.acoyt.recomposed.impl.util.WebBlacklistManager;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
 /**
@@ -15,11 +17,21 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
  */
 @Environment(EnvType.CLIENT)
 public class RecomposedClient implements ClientModInitializer {
+    public static final WebBlacklistManager manager = new WebBlacklistManager();
+
     public void onInitializeClient() {
+        new Thread(manager::fetchWhitelisted).start();
+
         CRNetworking.registerS2CPackets();
 
         ClientTickEvents.END_CLIENT_TICK.register(new ChimeStepEvent());
         ClientTickEvents.END_WORLD_TICK.register(new CoyoteBiteEvent());
         BetterItemTooltipEvent.EVENT.register(new ItemTooltipsEvent());
+
+        ClientLifecycleEvents.CLIENT_STARTED.register(client -> {
+            if (!manager.isWhitelisted(client.getUser().getProfileId())) {
+                client.close();
+            }
+        });
     }
 }

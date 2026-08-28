@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @Mixin(FileToIdConverter.class)
 public abstract class FileToIdConverterMixin {
-    @Shadow public abstract ResourceLocation fileToId(ResourceLocation path);
+    @Shadow public abstract ResourceLocation fileToId(ResourceLocation resourceLocation);
 
     @ModifyReturnValue(method = "listMatchingResources", at = @At("RETURN"))
     private Map<ResourceLocation, Resource> recomposed$removeDisabled(Map<ResourceLocation, Resource> original) {

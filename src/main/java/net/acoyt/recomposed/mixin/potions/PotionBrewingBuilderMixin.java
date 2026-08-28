@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(PotionBrewing.Builder.class)
 public abstract class PotionBrewingBuilderMixin {
     @WrapMethod(method = "addStartMix")
-    private void recomposed$disabledPotionRecipes(Item ingredient, Holder<Potion> potion, Operation<Void> original) {
-        if (CRUtil.isPotionDisabled(potion)) return;
-        original.call(ingredient, potion);
+    private void recomposed$disabledPotionRecipes(Item item, Holder<Potion> holder, Operation<Void> original) {
+        if (CRUtil.isPotionDisabled(holder)) return;
+        original.call(item, holder);
     }
 
     @WrapMethod(method = "addMix")
-    private void recomposed$disabledPotionRecipe(Holder<Potion> input, Item ingredient, Holder<Potion> output, Operation<Void> original) {
-        if (CRUtil.isPotionDisabled(input) || CRUtil.isPotionDisabled(output)) return;
-        original.call(input, ingredient, output);
+    private void recomposed$disabledPotionRecipe(Holder<Potion> holder, Item item, Holder<Potion> holder2, Operation<Void> original) {
+        if (CRUtil.isPotionDisabled(holder) || CRUtil.isPotionDisabled(holder2)) return;
+        original.call(holder, item, holder2);
     }
 }

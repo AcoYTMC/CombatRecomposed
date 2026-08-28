@@ -19,7 +19,7 @@ public abstract class IgniteMixin {
                     target = "Lnet/minecraft/world/entity/Entity;igniteForSeconds(F)V"
             )
     )
-    private void recomposed$burnForLessTime(Entity instance, float seconds, Operation<Void> original) {
-        original.call(instance, seconds / 2);
+    private void recomposed$burnForLessTime(Entity instance, float f, Operation<Void> original) {
+        original.call(instance, f / 2);
     }
 }

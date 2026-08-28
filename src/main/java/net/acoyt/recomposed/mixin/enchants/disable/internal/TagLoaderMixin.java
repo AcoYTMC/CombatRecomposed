@@ -26,7 +26,7 @@ public abstract class TagLoaderMixin {
                     target = "Lnet/minecraft/tags/TagEntry;build(Lnet/minecraft/tags/TagEntry$Lookup;Ljava/util/function/Consumer;)Z"
             )
     )
-    private <T> boolean recomposed$disableLogErrors(TagEntry instance, TagEntry.Lookup<T> valueGetter, Consumer<T> idConsumer, Operation<Boolean> original) {
-        return original.call(instance, valueGetter, idConsumer) || (directory.equals("tags/enchantment") && CRUtil.isDisabled(instance.id));
+    private <T> boolean recomposed$disableLogErrors(TagEntry instance, TagEntry.Lookup<T> lookup, Consumer<T> consumer, Operation<Boolean> original) {
+        return original.call(instance, lookup, consumer) || (directory.equals("tags/enchantment") && CRUtil.isDisabled(instance.id));
     }
 }

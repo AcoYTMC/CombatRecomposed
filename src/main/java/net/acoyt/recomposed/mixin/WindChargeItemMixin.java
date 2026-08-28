@@ -23,7 +23,7 @@ public abstract class WindChargeItemMixin extends Item {
     }
 
     @Inject(method = "use", at = @At("HEAD"))
-    private void recomposed$maceCooldown(Level world, Player user, InteractionHand hand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
-        user.getCooldowns().addCooldown(Items.MACE, 40);
+    private void recomposed$maceCooldown(Level level, Player player, InteractionHand interactionHand, CallbackInfoReturnable<InteractionResultHolder<ItemStack>> cir) {
+        player.getCooldowns().addCooldown(Items.MACE, 40);
     }
 }

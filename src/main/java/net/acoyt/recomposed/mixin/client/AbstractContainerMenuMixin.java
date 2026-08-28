@@ -25,9 +25,9 @@ public abstract class AbstractContainerMenuMixin {
     @Shadow @Final public NonNullList<Slot> slots;
 
     @Inject(method = "clicked", at = @At("TAIL"))
-    private void recomposed$resetSwing(int slotIndex, int button, ClickType actionType, Player player, CallbackInfo ci) {
-        if (slotIndex >= 0) {
-            Slot slot = this.slots.get(slotIndex);
+    private void recomposed$resetSwing(int i, int j, ClickType clickType, Player player, CallbackInfo ci) {
+        if (i >= 0) {
+            Slot slot = this.slots.get(i);
             ItemStack stack = slot.getItem();
             if (stack.isEmpty()) {
                 ChimeSwingEvent.swing = 0.0F;

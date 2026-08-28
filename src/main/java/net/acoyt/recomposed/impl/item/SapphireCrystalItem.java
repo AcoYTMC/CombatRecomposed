@@ -58,18 +58,19 @@ public class SapphireCrystalItem extends Item implements Trinket {
         return oldStack.getItem() != newStack.getItem();
     }
 
-    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack otherStack, Slot slot, ClickAction clickAction, Player player, SlotAccess slotAccess) {
+        ItemStack other = slotAccess.get();
         boolean isWaterBottle = other.is(ConventionalItemTags.BOTTLE_POTIONS) && !other.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).hasEffects();
 
         if (clickAction == ClickAction.SECONDARY && !ChargesComponent.get(stack).isFullyCharged() && (isWaterBottle || other.is(Items.WATER_BUCKET))) {
             ChargesComponent.getModifiable(stack, true).increment(isWaterBottle ? 2 : 5).apply();
             player.playSound(SoundEvents.BOTTLE_EMPTY, 1.0F, 1.0F);
-            other.shrink(1);
 
             ItemStack remainder = isWaterBottle ? Items.GLASS_BOTTLE.getDefaultInstance() : Items.BUCKET.getDefaultInstance();
-            if (!player.getInventory().add(remainder)) {
-                Containers.dropContents(player.level(), player.blockPosition(), NonNullList.of(remainder));
-            }
+            slotAccess.set(remainder);
+            //if (!player.getInventory().add(remainder)) {
+            //    Containers.dropContents(player.level(), player.blockPosition(), NonNullList.of(remainder));
+            //}
 
             return true;
         }

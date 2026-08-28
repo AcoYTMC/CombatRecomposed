@@ -30,11 +30,11 @@ public abstract class AbstractContainerScreenMixin<T extends AbstractContainerMe
                     ordinal = 0
             )
     )
-    private void recomposed$drawCursorStack(AbstractContainerScreen<T> instance, GuiGraphics context, ItemStack stack, int x, int y, String amountText, Operation<Void> original) {
-        if (stack.is(CRItems.WIND_CHIME)) {
-            ChimeSwingEvent.render(instance, context, stack, x, y, amountText);
+    private void recomposed$drawCursorStack(AbstractContainerScreen<T> instance, GuiGraphics guiGraphics, ItemStack itemStack, int i, int j, String string, Operation<Void> original) {
+        if (itemStack.is(CRItems.WIND_CHIME)) {
+            ChimeSwingEvent.render(instance, guiGraphics, itemStack, i, j, string);
         } else {
-            original.call(instance, context, stack, x, y, amountText);
+            original.call(instance, guiGraphics, itemStack, i, j, string);
         }
     }
 }

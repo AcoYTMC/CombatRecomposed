@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixin {
     @WrapMethod(method = "canEnchant")
-    private boolean recomposed$unenchantableMace(ItemStack stack, Operation<Boolean> original) {
-        return original.call(stack) && !stack.is(Items.MACE);
+    private boolean recomposed$unenchantableMace(ItemStack itemStack, Operation<Boolean> original) {
+        return original.call(itemStack) && !itemStack.is(Items.MACE);
     }
 }

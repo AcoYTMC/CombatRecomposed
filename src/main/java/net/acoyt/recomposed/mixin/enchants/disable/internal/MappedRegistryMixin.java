@@ -22,16 +22,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(MappedRegistry.class)
 public abstract class MappedRegistryMixin<T> {
-    @Shadow public abstract int getId(@Nullable T value);
-    @Shadow public abstract @Nullable T get(@Nullable ResourceKey<T> key);
+    @Shadow public abstract int getId(@Nullable T object);
+    @Shadow public abstract @Nullable T get(@Nullable ResourceKey<T> resourceKey);
 
     @Shadow @Final ResourceKey<? extends Registry<T>> key;
 
     @Shadow public abstract HolderOwner<T> holderOwner();
 
     @Inject(method = "<init>(Lnet/minecraft/resources/ResourceKey;Lcom/mojang/serialization/Lifecycle;Z)V", at = @At("TAIL"))
-    private void recomposed$setup(ResourceKey<T> key, Lifecycle lifecycle, boolean intrusive, CallbackInfo ci) {
-        if (key.equals(Registries.ENCHANTMENT)) {
+    private void recomposed$setup(ResourceKey<T> resourceKey, Lifecycle lifecycle, boolean bl, CallbackInfo ci) {
+        if (resourceKey.equals(Registries.ENCHANTMENT)) {
             CRUtil.ENCHANTMENT_REGISTRY_OWNER = holderOwner();
         }
     }

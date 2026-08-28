@@ -37,8 +37,8 @@ public abstract class LivingEntityMixin extends Entity {
                     ordinal = 0
             )
     )
-    private double recomposed$reduceFallDamage(LivingEntity instance, Holder<Attribute> attribute, Operation<Double> original) {
-        double value = original.call(instance, attribute);
+    private double recomposed$reduceFallDamage(LivingEntity instance, Holder<Attribute> holder, Operation<Double> original) {
+        double value = original.call(instance, holder);
         WindChimeComponent component = WindChimeComponent.KEY.getNullable(this);
         if (component != null && component.getRemainingJumps() > 0 && instance instanceof Player player && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())) {
             return value + component.getRemainingJumps();
@@ -54,13 +54,13 @@ public abstract class LivingEntityMixin extends Entity {
                     target = "Lnet/minecraft/util/Mth;ceil(D)I"
             )
     )
-    private int recomposed$dontPlayFallSound(double value, Operation<Integer> original, float fallDistance) {
+    private int recomposed$dontPlayFallSound(double d, Operation<Integer> original, float f) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if (!(living instanceof Player player)) return original.call(value);
-        return fallDistance > 1.0F
+        if (!(living instanceof Player player)) return original.call(d);
+        return f > 1.0F
                 && !WindChimeItem.getWorn(living).isEmpty()
                 && WindChimeUsableEvent.EVENT.invoker().canUse(player, player.level())
-                    ? 0 : original.call(value);
+                    ? 0 : original.call(d);
     }
 
     @WrapOperation(
@@ -70,18 +70,18 @@ public abstract class LivingEntityMixin extends Entity {
                     target = "Lnet/minecraft/world/entity/LivingEntity;actuallyHurt(Lnet/minecraft/world/damagesource/DamageSource;F)V"
             )
     )
-    private void recomposed$setCombatTimer(LivingEntity instance, DamageSource source, float amount, Operation<Void> original) {
+    private void recomposed$setCombatTimer(LivingEntity instance, DamageSource damageSource, float amount, Operation<Void> original) {
         LivingEntity living = (LivingEntity)(Object)this;
-        if (living instanceof Player player && source.getEntity() instanceof Player attacker && !player.equals(attacker) && !player.level().isClientSide && CRConfig.combatTimer > 0) {
+        if (living instanceof Player player && damageSource.getEntity() instanceof Player attacker && !player.equals(attacker) && !player.level().isClientSide && CRConfig.combatTimer > 0) {
             CombatTimerComponent.KEY.get(player).setRemaining(CRConfig.combatTimer * 20); // 20s
             CombatTimerComponent.KEY.get(attacker).setRemaining(CRConfig.combatTimer * 20); // 20s
         }
 
-        if (source.getDirectEntity() instanceof MinecartTNT) {
+        if (damageSource.getDirectEntity() instanceof MinecartTNT) {
             amount = Mth.clamp(amount, 0.0F, CRConfig.minecartDamageCap);
         }
 
-        original.call(instance, source, amount);
+        original.call(instance, damageSource, amount);
     }
 
 //    @WrapOperation(

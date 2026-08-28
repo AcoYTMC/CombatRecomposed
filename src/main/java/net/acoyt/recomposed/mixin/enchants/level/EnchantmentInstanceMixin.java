@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(EnchantmentInstance.class)
 public abstract class EnchantmentInstanceMixin {
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
-    private static int recomposed$universalLevel(int level) {
+    private static int recomposed$universalLevel(int i) {
         return 1;
     }
 }

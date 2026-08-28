@@ -26,6 +26,8 @@ public class CRItemTagGen extends FabricTagProvider.ItemTagProvider {
         this.getOrCreateTagBuilder(CRItemTags.STRONG)
                 .add(GOLDEN_SWORD, GOLDEN_SHOVEL, GOLDEN_PICKAXE, GOLDEN_AXE, GOLDEN_HOE)
                 .add(NETHERITE_SWORD, NETHERITE_SHOVEL, NETHERITE_PICKAXE, NETHERITE_AXE, NETHERITE_HOE)
+                .add(GOLDEN_HELMET, GOLDEN_CHESTPLATE, GOLDEN_LEGGINGS, GOLDEN_BOOTS)
+                .add(NETHERITE_HELMET, NETHERITE_CHESTPLATE, NETHERITE_LEGGINGS, NETHERITE_BOOTS)
                 .setReplace(false);
 
         this.getOrCreateTagBuilder(CRItemTags.TRINKETS)
